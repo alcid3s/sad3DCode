@@ -75,7 +75,7 @@ void init()
 
     player = std::make_shared<GameObject>();
     player->position = mazeGen->spawnPoint;
-    player->addComponent(std::make_shared<PlayerComponent>(window, player));
+    player->addComponent(std::make_shared<PlayerComponent>(window));
 
     for (auto& file : maze) {
         for (auto& obj : file) {

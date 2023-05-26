@@ -2,8 +2,8 @@
 #include "GameObject.h"
 #include <GLFW/glfw3.h>
 
-PlayerComponent::PlayerComponent(GLFWwindow* window, GameObject* obj, float speed) 
-	: window(window), obj(obj), speed(speed)
+PlayerComponent::PlayerComponent(GLFWwindow* window, float speed) 
+	: window(window), speed(speed)
 {
 
 }
@@ -15,8 +15,8 @@ PlayerComponent::~PlayerComponent()
 
 void PlayerComponent::move(float angle, float fac, float deltaTime)
 {
-	obj->position.x += (float)cos(obj->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
-	obj->position.z += (float)sin(obj->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
+	gameObject->position.x += (float)cos(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
+	gameObject->position.z += (float)sin(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
 }
 
 void PlayerComponent::update(float deltaTime)
