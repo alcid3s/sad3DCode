@@ -1,5 +1,5 @@
 #pragma once
-
+#include "GameObject.h"
 enum Type {
 	Floor = 0,
 	Wall = 1,
@@ -9,10 +9,8 @@ enum Type {
 	TypeNone = -1
 };
 
-enum Bearing {
-	North = 0,
-	East = 1,
-	South = 2,
-	West = 3,
-	BearingNone = -1
+struct Cell {
+	GameObject* gameObject;
+	bool visited;
+	Type type;
 };

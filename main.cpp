@@ -81,11 +81,10 @@ void init()
 
     for (auto& file : maze) {
         for (auto& obj : file) {
-            objects.push_back(obj);
+            objects.push_back(std::make_shared<GameObject>(obj->gameObject));
         }
     }
 }
-
 
 void update()
 {

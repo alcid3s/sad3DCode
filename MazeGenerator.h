@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include <memory>
+#include "enumType.h"
 
 class GameObject;
 class Texture;
@@ -11,19 +12,18 @@ class ObjModel;
 class CubeComponent;
 class PlaneComponent;
 
-
 class MazeGenerator {
 public:
 	MazeGenerator();
 	~MazeGenerator();
 
-	std::vector<std::vector<std::shared_ptr<GameObject>>> Generate(const int& sizeOfMazeX = 10, const int& sizeOfMazeZ = 10);
+	std::vector<std::vector<std::shared_ptr<Cell>>> Generate(const int& sizeOfMazeX = 10, const int& sizeOfMazeZ = 10);
 
 	// place where enemy will spawn.
 	GameObject* enemySpawnTile;
 
 	// tile where player will begin
-	GameObject* spawnTile;
+	GameObject* spawnGameObject;
 	glm::vec3 spawnPoint = glm::vec3(0, 0, 0);
 
 	// place where altar will stand
@@ -34,7 +34,7 @@ private:
 	int x, y;
 	int amountOfTiles = 0;
 	std::vector<Texture*> mazeTextures;
-	std::vector<std::vector<std::shared_ptr<GameObject>>> maze;
+	std::vector<std::vector<std::shared_ptr<Cell>>> maze;
 
 	ObjModel* altar;
 
@@ -54,11 +54,11 @@ private:
 
 	// functions to walk the maze and apply DFS algorithm
 private:
-	void DepthFirstSearch(GameObject* tile, std::list<GameObject*>* visitedTiles);
+	void DepthFirstSearch(std::shared_ptr<Cell> tile, std::vector<std::shared_ptr<Cell>>* visitedTiles);
 	void FillMaze(const int& sizeX, const int& sizeZ);
 };
 
 // out of class because they're needed in FpsCam too.
-std::list<GameObject*> GetUnvisitedNeighbours(GameObject* gameObject);
-std::list<GameObject*> GetNeighbours(GameObject* gameObject);
-bool NextToFloor(GameObject* gameObject);
+std::vector<std::shared_ptr<Cell>> GetUnvisitedNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>>* maze);
+std::vector<std::shared_ptr<Cell>> GetNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>>* maze);
+bool NextToFloor(std::shared_ptr<Cell> tile);
