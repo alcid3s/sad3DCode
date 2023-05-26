@@ -79,9 +79,9 @@ void init()
     player->addComponent(std::make_shared<PlayerComponent>(window));
     player->addComponent(std::make_shared<CameraComponent>(window));
 
-    for (auto& file : maze) {
-        for (auto& obj : file) {
-            objects.push_back(std::make_shared<GameObject>(obj->gameObject));
+    for (auto row : maze) {
+        for (auto obj : row) {
+            objects.push_back(obj->gameObject);
         }
     }
 }
@@ -89,7 +89,7 @@ void init()
 void update()
 {
     double currentFrame = glfwGetTime();
-    double deltaTime = currentFrame - lastFrameTime;
+    float deltaTime = currentFrame - lastFrameTime;
     lastFrameTime = currentFrame;
 
     for (auto& o : objects)

@@ -32,14 +32,12 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 	SetupMaze(sizeOfMazeX, sizeOfMazeZ);
 
 	// getting the starting tile.
-	spawnGameObject = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1)->gameObject;
-	spawnGameObject->addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
+	spawnGameObject = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1);
+	spawnGameObject->gameObject->addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
 	std::vector<std::shared_ptr<Cell>> visitedTiles;
 
-	auto cell = std::make_shared<Cell>(spawnGameObject, true, Type::Floor);
-
 	// create maze with DFS algorithm
-	DepthFirstSearch(cell, &visitedTiles);
+	DepthFirstSearch(this->spawnGameObject, &visitedTiles);
 
 	return this->maze;
 }
@@ -47,7 +45,7 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 void MazeGenerator::DepthFirstSearch(std::shared_ptr<Cell> tile, std::vector<std::shared_ptr<Cell>>* visitedTiles) {
 	tile->visited = true;
 
-	std::vector<std::shared_ptr<Cell>> neighbours = GetUnvisitedNeighbours(tile, &maze);
+	std::vector<std::shared_ptr<Cell>> neighbours = GetUnvisitedNeighbours(tile, maze);
 
 	while (!neighbours.empty()) {
 		int random = rand() % neighbours.size();
@@ -63,7 +61,7 @@ void MazeGenerator::DepthFirstSearch(std::shared_ptr<Cell> tile, std::vector<std
 
 		DepthFirstSearch(nextTile, visitedTiles);
 
-		neighbours = GetUnvisitedNeighbours(tile, &maze);
+		neighbours = GetUnvisitedNeighbours(tile, maze);
 	}
 
 	if (visitedTiles->size() == amountOfTiles)
@@ -72,7 +70,7 @@ void MazeGenerator::DepthFirstSearch(std::shared_ptr<Cell> tile, std::vector<std
 	std::shared_ptr<Cell> backtrackTile = nullptr;
 	for (int i = visitedTiles->size() - 1; i >= 0; i--) {
 		auto tile = visitedTiles->at(i);
-		std::vector<std::shared_ptr<Cell>> neighbors = GetUnvisitedNeighbours(tile, &maze);
+		std::vector<std::shared_ptr<Cell>> neighbors = GetUnvisitedNeighbours(tile, maze);
 
 		if (!neighbors.empty()) {
 			backtrackTile = tile;
@@ -116,12 +114,12 @@ std::vector<std::shared_ptr<Cell>> GetNeighbours(std::shared_ptr<Cell> tile, std
 	return neighbours;
 }
 
-std::vector<std::shared_ptr<Cell>> GetUnvisitedNeighbours(std::shared_ptr<Cell> currentTile, std::vector<std::vector<std::shared_ptr<Cell>>>* maze) {
-	std::vector<std::shared_ptr<Cell>> neighbours = GetNeighbours(currentTile, *maze);
+std::vector<std::shared_ptr<Cell>> GetUnvisitedNeighbours(std::shared_ptr<Cell> currentTile, std::vector<std::vector<std::shared_ptr<Cell>>> maze) {
+	std::vector<std::shared_ptr<Cell>> neighbours = GetNeighbours(currentTile, maze);
 
 	std::vector<std::shared_ptr<Cell>> tilesToRemove;
 	for (auto& tile : neighbours) {
-		if (tile->visited || NextToFloor(tile))
+		if (tile->visited || NextToFloor(tile, maze))
 			tilesToRemove.push_back(tile);
 	}
 	neighbours.erase(std::remove_if(neighbours.begin(), neighbours.end(), [&tilesToRemove](std::shared_ptr<Cell> tile) {
@@ -143,19 +141,23 @@ void MazeGenerator::SetupMaze(const int& sizeOfMazeX, const int& sizeOfMazeZ)
 		for (int x = 0; x <= sizeOfMazeX; x++) {
 
 			// position gets a GameObject.
-			auto cell = std::make_shared<Cell>(new GameObject(), false, Type::TypeNone);
+			auto cell = std::make_shared<Cell>();
+			cell->gameObject = std::shared_ptr<GameObject>();
 
 			// check if it's an edge. If so, place Wall.
 			if (IsEdge(x, z, sizeOfMazeX, sizeOfMazeZ)) {
+				cell->visited = true;
 				cell->gameObject->position = glm::vec3(x, 0.f, z);
 				cell->gameObject->addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
+				cell->type = Type::Edge;
 			}
 
 			// not an edge
 			else {
 				this->amountOfTiles++;
+				cell->visited = false;
 				cell->gameObject->position = glm::vec3(x, -.5f, z);
-
+				cell->type = Type::Empty;
 			}
 			file.push_back(cell);
 		}

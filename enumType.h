@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include <memory>
 enum Type {
 	Floor = 0,
 	Wall = 1,
@@ -10,7 +11,7 @@ enum Type {
 };
 
 struct Cell {
-	GameObject* gameObject;
+	std::shared_ptr<GameObject> gameObject;
 	bool visited;
 	Type type;
 };

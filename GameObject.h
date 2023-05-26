@@ -34,7 +34,7 @@ public:
 	{
 		for (auto c : components)
 		{
-			std::shared_ptr<T> t = dynamic_pointer_cast<T>(c);
+			std::shared_ptr<T> t = std::dynamic_pointer_cast<T>(c);
 			if (t)
 				return t;
 		}

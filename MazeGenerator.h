@@ -20,14 +20,14 @@ public:
 	std::vector<std::vector<std::shared_ptr<Cell>>> Generate(const int& sizeOfMazeX = 10, const int& sizeOfMazeZ = 10);
 
 	// place where enemy will spawn.
-	GameObject* enemySpawnTile;
+	std::shared_ptr<GameObject> enemySpawnTile;
 
 	// tile where player will begin
-	GameObject* spawnGameObject;
+	std::shared_ptr<Cell> spawnGameObject;
 	glm::vec3 spawnPoint = glm::vec3(0, 0, 0);
 
 	// place where altar will stand
-	GameObject* endTile;
+	std::shared_ptr<GameObject> endTile;
 	glm::vec3 endPoint = glm::vec3(2, 0, 2);
 
 private:
@@ -59,6 +59,6 @@ private:
 };
 
 // out of class because they're needed in FpsCam too.
-std::vector<std::shared_ptr<Cell>> GetUnvisitedNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>>* maze);
-std::vector<std::shared_ptr<Cell>> GetNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>>* maze);
-bool NextToFloor(std::shared_ptr<Cell> tile);
+std::vector<std::shared_ptr<Cell>> GetUnvisitedNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>> maze);
+std::vector<std::shared_ptr<Cell>> GetNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>> maze);
+bool NextToFloor(std::shared_ptr<Cell> currentTile, std::vector<std::vector<std::shared_ptr<Cell>>> maze);
