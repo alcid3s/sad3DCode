@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\GameObject">
+      <UniqueIdentifier>{cc8d05e3-3bdd-4908-98bf-0f1f4d562bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{488ce78e-afc7-4060-811e-604a6f5b8c46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\CubeComponent">
+      <UniqueIdentifier>{25faf74f-d833-4e58-982d-14f5740a8719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\PlaneComponent">
+      <UniqueIdentifier>{a476b3ef-a7a1-4471-9d91-800e0d26f886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\DrawComponent">
+      <UniqueIdentifier>{2a57a04c-b0e1-4833-bd93-b90c5986274a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\TileComponent">
+      <UniqueIdentifier>{81e10d21-bf41-419b-b0c1-502d0945212c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Texture">
+      <UniqueIdentifier>{e180a76f-6ffa-44ef-a6ed-ade5e0bb9011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stbi">
+      <UniqueIdentifier>{6ae7fae1-ff33-413f-9273-20fdd9bcaf9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ModelLoader">
+      <UniqueIdentifier>{50c05c58-1ef6-412a-94f0-04fb96bae33e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\enumType">
+      <UniqueIdentifier>{7e5b54f9-4ff5-42e0-9d91-2f8af8ce468c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Maze">
+      <UniqueIdentifier>{61e0e9f7-a004-4b07-83f6-b1e590f039fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\PlayerComponent">
+      <UniqueIdentifier>{8a91b9b9-b3f0-4966-9aac-8dab9f2afa01}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tigl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeComponent.cpp">
+      <Filter>Source Files\Components\CubeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawComponent.cpp">
+      <Filter>Source Files\Components\DrawComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="TileComponent.cpp">
+      <Filter>Source Files\Components\TileComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaneComponent.cpp">
+      <Filter>Source Files\Components\PlaneComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Source Files\stbi</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjModel.cpp">
+      <Filter>Source Files\ModelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="MazeGenerator.cpp">
+      <Filter>Source Files\Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Source Files\Components\PlayerComponent</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tigl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Source Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeComponent.h">
+      <Filter>Source Files\Components\CubeComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawComponent.h">
+      <Filter>Source Files\Components\DrawComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="TileComponent.h">
+      <Filter>Source Files\Components\TileComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneComponent.h">
+      <Filter>Source Files\Components\PlaneComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Source Files\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Source Files\stbi</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjModel.h">
+      <Filter>Source Files\ModelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="enumType.h">
+      <Filter>Source Files\enumType</Filter>
+    </ClInclude>
+    <ClInclude Include="MazeGenerator.h">
+      <Filter>Source Files\Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Source Files\Components\PlayerComponent</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
