@@ -23,8 +23,8 @@ PlaneComponent::~PlaneComponent() {
 }
 
 void PlaneComponent::draw() {
-	tigl::shader->setModelMatrix(glm::translate(glm::mat4(1.0f), translate));
-	tigl::begin(GL_QUADS);
+
+	tigl::shader->enableColor(true);
 	if (texture) {
 		texture->bind();
 		tigl::shader->enableTexture(true);
@@ -34,5 +34,5 @@ void PlaneComponent::draw() {
 	}
 	else
 		tigl::drawVertices(GL_QUADS, verts);
-	tigl::end();
+	tigl::shader->enableColor(false);
 }

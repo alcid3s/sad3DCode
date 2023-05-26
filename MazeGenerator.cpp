@@ -32,8 +32,8 @@ std::vector<std::vector<std::shared_ptr<GameObject>>> MazeGenerator::Generate(co
 	SetupMaze(sizeOfMazeX, sizeOfMazeZ);
 	// getting the starting tile.
 	spawnTile = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1).get();
-	//spawnTile->addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
-	// std::list<GameObject*> visitedTiles;
+	spawnTile->addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
+	std::list<GameObject*> visitedTiles;
 
 	return this->maze;
 }
@@ -54,18 +54,18 @@ void MazeGenerator::SetupMaze(const int& sizeOfMazeX, const int& sizeOfMazeZ)
 
 			// check if it's an edge. If so, place Wall.
 			if (IsEdge(x, z, sizeOfMazeX, sizeOfMazeZ)) {
-				obj->position = glm::vec3(x, -5.f, z);
+				obj->position = glm::vec3(x, 0.f, z);
 				obj->addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
-				file.push_back(obj);
 			}
 
 			// not an edge
 			else {
 				this->amountOfTiles++;
 				obj->position = glm::vec3(x, 0, z);
-				obj->addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
-				file.push_back(obj);
+				obj->addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0.01, 1), mazeTextures[0]));
+
 			}
+			file.push_back(obj);
 		}
 		maze.push_back(file);
 	}

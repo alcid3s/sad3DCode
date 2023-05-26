@@ -88,7 +88,6 @@ CubeComponent::~CubeComponent()
 void CubeComponent::draw()
 {
     tigl::shader->enableColor(true);
-    tigl::begin(GL_QUADS);
     if (texture) {
         texture->bind();
         tigl::shader->enableTexture(true);
@@ -99,5 +98,4 @@ void CubeComponent::draw()
     else
         tigl::drawVertices(GL_QUADS, verts);
     tigl::shader->enableColor(false);
-    tigl::end();
 }

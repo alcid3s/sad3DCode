@@ -6,7 +6,7 @@ class GameObject;
 
 class PlayerComponent : public Component {
 public:
-	PlayerComponent(GLFWwindow* window, float speed = 450);
+	PlayerComponent(GLFWwindow* window, float speed = 100);
 	~PlayerComponent();
 
 	void move(float angle, float fac, float deltaTime);
