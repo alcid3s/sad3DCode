@@ -72,7 +72,7 @@ void init()
     });
 
     mazeGen = new MazeGenerator();
-    auto maze = mazeGen->Generate(20, 20);
+    auto maze = mazeGen->Generate(10, 10);
 
     player = std::make_shared<GameObject>();
     player->position = mazeGen->spawnPoint;
@@ -81,7 +81,7 @@ void init()
 
     for (auto row : maze) {
         for (auto obj : row) {
-            objects.push_back(obj->gameObject);
+            objects.push_back(std::make_shared<GameObject>(obj->gameObject));
         }
     }
 }

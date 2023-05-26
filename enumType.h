@@ -11,7 +11,7 @@ enum Type {
 };
 
 struct Cell {
-	std::shared_ptr<GameObject> gameObject;
+	GameObject gameObject;
 	bool visited;
 	Type type;
 };

@@ -33,7 +33,7 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 
 	// getting the starting tile.
 	spawnGameObject = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1);
-	spawnGameObject->gameObject->addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
+	spawnGameObject->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
 	std::vector<std::shared_ptr<Cell>> visitedTiles;
 
 	// create maze with DFS algorithm
@@ -54,7 +54,7 @@ void MazeGenerator::DepthFirstSearch(std::shared_ptr<Cell> tile, std::vector<std
 		auto nextTile = neighbours[random];
 
 		// set the unvisited tile to a plane.
-		nextTile->gameObject->addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
+		nextTile->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
 		nextTile->type = Type::Floor;
 
 		visitedTiles->push_back(tile);
@@ -88,25 +88,25 @@ std::vector<std::shared_ptr<Cell>> GetNeighbours(std::shared_ptr<Cell> tile, std
 	auto neighbour = std::shared_ptr<Cell>();
 
 	// get north neighbour
-	neighbour = maze[tile->gameObject->position.z - 1][tile->gameObject->position.x];
+	neighbour = maze[tile->gameObject.position.z - 1][tile->gameObject.position.x];
 	if (neighbour) {
 		neighbours.push_back(neighbour);
 	}
 
 	// get east neighbour
-	neighbour = maze[tile->gameObject->position.z][tile->gameObject->position.x + 1];
+	neighbour = maze[tile->gameObject.position.z][tile->gameObject.position.x + 1];
 	if (neighbour) {
 		neighbours.push_back(neighbour);
 	}
 
 	// get south neighbour
-	neighbour = maze[tile->gameObject->position.z + 1][tile->gameObject->position.x];
+	neighbour = maze[tile->gameObject.position.z + 1][tile->gameObject.position.x];
 	if (neighbour) {
 		neighbours.push_back(neighbour);
 	}
 
 	// get west neighbour
-	neighbour = maze[tile->gameObject->position.z][tile->gameObject->position.x - 1];
+	neighbour = maze[tile->gameObject.position.z][tile->gameObject.position.x - 1];
 	if (neighbour) {
 		neighbours.push_back(neighbour);
 	}
@@ -140,26 +140,24 @@ void MazeGenerator::SetupMaze(const int& sizeOfMazeX, const int& sizeOfMazeZ)
 		std::vector<std::shared_ptr<Cell>> file;
 		for (int x = 0; x <= sizeOfMazeX; x++) {
 
-			// position gets a GameObject.
-			auto cell = std::make_shared<Cell>();
-			cell->gameObject = std::shared_ptr<GameObject>();
+			Cell cell;
 
 			// check if it's an edge. If so, place Wall.
 			if (IsEdge(x, z, sizeOfMazeX, sizeOfMazeZ)) {
-				cell->visited = true;
-				cell->gameObject->position = glm::vec3(x, 0.f, z);
-				cell->gameObject->addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
-				cell->type = Type::Edge;
+				cell.visited = true;
+				cell.gameObject.position = glm::vec3(x, 0.f, z);
+				cell.gameObject.addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
+				cell.type = Type::Edge;
 			}
 
 			// not an edge
 			else {
 				this->amountOfTiles++;
-				cell->visited = false;
-				cell->gameObject->position = glm::vec3(x, -.5f, z);
-				cell->type = Type::Empty;
+				cell.visited = false;
+				cell.gameObject.position = glm::vec3(x, -.5f, z);
+				cell.type = Type::Empty;
 			}
-			file.push_back(cell);
+			file.push_back(std::make_shared<Cell>(cell));
 		}
 		maze.push_back(file);
 	}
