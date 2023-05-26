@@ -29,4 +29,12 @@ void PlayerComponent::update(float deltaTime)
 		move(0, 0.05f, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		move(180, 0.05f, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		gameObject->position.y -= speed * 0.001f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+	{
+		gameObject->position.y += speed * 0.001f;
+	}
 }

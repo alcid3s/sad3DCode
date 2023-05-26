@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "CubeComponent.h"
 #include "PlayerComponent.h"
+#include "CameraComponent.h"
 #include <memory>
 
 using tigl::Vertex;
@@ -71,11 +72,12 @@ void init()
     });
 
     mazeGen = new MazeGenerator();
-    auto maze = mazeGen->Generate(10, 10);
+    auto maze = mazeGen->Generate(20, 20);
 
     player = std::make_shared<GameObject>();
     player->position = mazeGen->spawnPoint;
     player->addComponent(std::make_shared<PlayerComponent>(window));
+    player->addComponent(std::make_shared<CameraComponent>(window));
 
     for (auto& file : maze) {
         for (auto& obj : file) {
@@ -106,8 +108,10 @@ void draw()
     glGetIntegerv(GL_VIEWPORT, viewport);
     glm::mat4 projection = glm::perspective(glm::radians(75.0f), viewport[2] / (float)viewport[3], 0.01f, 1000.0f);
 
+    auto cameraComponent = player->getComponent<CameraComponent>();
+
     tigl::shader->setProjectionMatrix(projection);
-    tigl::shader->setViewMatrix(glm::lookAt(glm::vec3(0, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
+    tigl::shader->setViewMatrix(cameraComponent->getMatrix());
     tigl::shader->setModelMatrix(glm::mat4(1.0f));
 
     tigl::shader->enableColor(true);

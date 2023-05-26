@@ -49,6 +49,9 @@
     <Filter Include="Source Files\Components\PlayerComponent">
       <UniqueIdentifier>{8a91b9b9-b3f0-4966-9aac-8dab9f2afa01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\CameraComponent">
+      <UniqueIdentifier>{6f6a71f1-2eae-4146-8a07-3c09d82f52c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tigl.cpp">
@@ -90,6 +93,9 @@
     <ClCompile Include="PlayerComponent.cpp">
       <Filter>Source Files\Components\PlayerComponent</Filter>
     </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Source Files\Components\CameraComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tigl.h">
@@ -130,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="PlayerComponent.h">
       <Filter>Source Files\Components\PlayerComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Source Files\Components\CameraComponent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
