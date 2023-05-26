@@ -32,12 +32,15 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 	SetupMaze(sizeOfMazeX, sizeOfMazeZ);
 
 	// getting the starting tile.
-	spawnGameObject = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1);
-	spawnGameObject->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
+	this->spawnGameObject = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1);
+	this->spawnGameObject->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
 	std::vector<std::shared_ptr<Cell>> visitedTiles;
 
 	// create maze with DFS algorithm
 	DepthFirstSearch(this->spawnGameObject, &visitedTiles);
+
+	// create a random endpoint somewhere not close to the spawnPoint.
+	this->endTile = std::make_shared<GameObject>(visitedTiles.at(((visitedTiles.size() - 1) / 4) * 3).get()->gameObject);
 
 	return this->maze;
 }
@@ -81,52 +84,6 @@ void MazeGenerator::DepthFirstSearch(std::shared_ptr<Cell> tile, std::vector<std
 	if (backtrackTile) {
 		DepthFirstSearch(backtrackTile, visitedTiles);
 	}
-}
-
-std::vector<std::shared_ptr<Cell>> GetNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>> maze) {
-	std::vector<std::shared_ptr<Cell>> neighbours;
-	auto neighbour = std::shared_ptr<Cell>();
-
-	// get north neighbour
-	neighbour = maze[tile->gameObject.position.z - 1][tile->gameObject.position.x];
-	if (neighbour) {
-		neighbours.push_back(neighbour);
-	}
-
-	// get east neighbour
-	neighbour = maze[tile->gameObject.position.z][tile->gameObject.position.x + 1];
-	if (neighbour) {
-		neighbours.push_back(neighbour);
-	}
-
-	// get south neighbour
-	neighbour = maze[tile->gameObject.position.z + 1][tile->gameObject.position.x];
-	if (neighbour) {
-		neighbours.push_back(neighbour);
-	}
-
-	// get west neighbour
-	neighbour = maze[tile->gameObject.position.z][tile->gameObject.position.x - 1];
-	if (neighbour) {
-		neighbours.push_back(neighbour);
-	}
-
-	return neighbours;
-}
-
-std::vector<std::shared_ptr<Cell>> GetUnvisitedNeighbours(std::shared_ptr<Cell> currentTile, std::vector<std::vector<std::shared_ptr<Cell>>> maze) {
-	std::vector<std::shared_ptr<Cell>> neighbours = GetNeighbours(currentTile, maze);
-
-	std::vector<std::shared_ptr<Cell>> tilesToRemove;
-	for (auto& tile : neighbours) {
-		if (tile->visited || NextToFloor(tile, maze))
-			tilesToRemove.push_back(tile);
-	}
-	neighbours.erase(std::remove_if(neighbours.begin(), neighbours.end(), [&tilesToRemove](std::shared_ptr<Cell> tile) {
-		return std::find(tilesToRemove.begin(), tilesToRemove.end(), tile) != tilesToRemove.end();
-		}), neighbours.end());
-
-	return neighbours;
 }
 
 void MazeGenerator::SetupMaze(const int& sizeOfMazeX, const int& sizeOfMazeZ)
@@ -206,4 +163,50 @@ bool NextToFloor(std::shared_ptr<Cell> currentTile, std::vector<std::vector<std:
 		}
 	}
 	return connections > 1;
+}
+
+std::vector<std::shared_ptr<Cell>> GetNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>> maze) {
+	std::vector<std::shared_ptr<Cell>> neighbours;
+	auto neighbour = std::shared_ptr<Cell>();
+
+	// get north neighbour
+	neighbour = maze[tile->gameObject.position.z - 1][tile->gameObject.position.x];
+	if (neighbour) {
+		neighbours.push_back(neighbour);
+	}
+
+	// get east neighbour
+	neighbour = maze[tile->gameObject.position.z][tile->gameObject.position.x + 1];
+	if (neighbour) {
+		neighbours.push_back(neighbour);
+	}
+
+	// get south neighbour
+	neighbour = maze[tile->gameObject.position.z + 1][tile->gameObject.position.x];
+	if (neighbour) {
+		neighbours.push_back(neighbour);
+	}
+
+	// get west neighbour
+	neighbour = maze[tile->gameObject.position.z][tile->gameObject.position.x - 1];
+	if (neighbour) {
+		neighbours.push_back(neighbour);
+	}
+
+	return neighbours;
+}
+
+std::vector<std::shared_ptr<Cell>> GetUnvisitedNeighbours(std::shared_ptr<Cell> currentTile, std::vector<std::vector<std::shared_ptr<Cell>>> maze) {
+	std::vector<std::shared_ptr<Cell>> neighbours = GetNeighbours(currentTile, maze);
+
+	std::vector<std::shared_ptr<Cell>> tilesToRemove;
+	for (auto& tile : neighbours) {
+		if (tile->visited || NextToFloor(tile, maze))
+			tilesToRemove.push_back(tile);
+	}
+	neighbours.erase(std::remove_if(neighbours.begin(), neighbours.end(), [&tilesToRemove](std::shared_ptr<Cell> tile) {
+		return std::find(tilesToRemove.begin(), tilesToRemove.end(), tile) != tilesToRemove.end();
+		}), neighbours.end());
+
+	return neighbours;
 }
