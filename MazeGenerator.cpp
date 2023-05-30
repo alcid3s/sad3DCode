@@ -146,7 +146,7 @@ void MazeGenerator::FillMaze(const int& sizeX, const int& sizeZ) {
 		{
 			auto cell = maze[z][x];
 			if (cell->type == Type::Empty) {
-				cell->type == Type::Wall;
+				cell->type = Type::Wall;
 				cell->gameObject.position = glm::vec3(x, 0.f, z);
 				cell->gameObject.addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
 			}

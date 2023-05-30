@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Components\FlashlightComponent">
       <UniqueIdentifier>{e20671e6-888c-4e22-8d87-1acfc136b8fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\CollisionComponent">
+      <UniqueIdentifier>{4d959ca3-f1fb-4336-bf64-f28b0f742737}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tigl.cpp">
@@ -108,6 +111,9 @@
     <ClCompile Include="FlashlightComponent.cpp">
       <Filter>Source Files\Components\FlashlightComponent</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Source Files\Components\CollisionComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tigl.h">
@@ -157,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="FlashlightComponent.h">
       <Filter>Source Files\Components\FlashlightComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Source Files\Components\CollisionComponent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
