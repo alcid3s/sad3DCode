@@ -2,8 +2,8 @@
 #include <GLFW/glfw3.h>
 #include "GameObject.h"
 
-CameraComponent::CameraComponent(GLFWwindow* window, bool *bIsRunning) 
-	: window(window), bIsRunning(bIsRunning)
+CameraComponent::CameraComponent(GLFWwindow* window) 
+	: window(window), fov(75.f)
 {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	if (glfwRawMouseMotionSupported()) {
@@ -27,7 +27,6 @@ glm::mat4 CameraComponent::getMatrix()
 void CameraComponent::update(float deltaTime)
 {
 	updateCamera(deltaTime);
-	changeFOV(deltaTime);
 }
 
 void CameraComponent::updateCamera(float deltaTime) {
@@ -48,10 +47,10 @@ void CameraComponent::updateCamera(float deltaTime) {
 	lastY = y;
 }
 
-void CameraComponent::changeFOV(float deltaTime)
+void CameraComponent::changeFOV(float deltaTime, bool running)
 {
-	if (bIsRunning) {
-		if (fov < 100.f) {
+	if(running) {
+	if (fov < 100.f) {
 			fov += 50.f * deltaTime;
 		}
 	}

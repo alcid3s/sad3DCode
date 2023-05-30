@@ -10,19 +10,17 @@ class Component;
 class DrawComponent;
 class BoundingBoxComponent;
 
-template<typename T>
 class GameObject
 {
 	std::shared_ptr<DrawComponent> drawComponent;
 	std::list<std::shared_ptr<Component>> components;
 public:
-	GameObject(T data);
+	GameObject();
 	~GameObject();
 
 	glm::vec3 position;
 	glm::vec3 rotation = glm::vec3(0, 0, 0);
 	glm::vec3 scale = glm::vec3(1, 1, 1);
-
 
 	void addComponent(std::shared_ptr<Component> component);
 	std::list<std::shared_ptr<Component>> getComponents();
@@ -51,7 +49,5 @@ public:
 				return t != nullptr;
 			});
 	}
-private:
-	T* data;
 };
 

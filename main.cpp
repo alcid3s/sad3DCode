@@ -21,30 +21,28 @@ GLFWwindow* window;
 
 std::shared_ptr<GameObject> player;
 std::list<std::shared_ptr<GameObject>> objects;
-MazeGenerator *mazeGen;
+MazeGenerator* mazeGen;
 double lastFrameTime = 0;
-
 
 void init();
 void update();
 void draw();
 
-
 int main(void)
 {
-    if (!glfwInit())
-        throw "Could not initialize glwf";
-    window = glfwCreateWindow(1400, 800, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        throw "Could not initialize glwf";
-    }
-    glfwMakeContextCurrent(window);
+	if (!glfwInit())
+		throw "Could not initialize glwf";
+	window = glfwCreateWindow(1400, 800, "Hello World", NULL, NULL);
+	if (!window)
+	{
+		glfwTerminate();
+		throw "Could not initialize glwf";
+	}
+	glfwMakeContextCurrent(window);
 
-    tigl::init();
+	tigl::init();
 
-    init();
+	init();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -56,67 +54,72 @@ int main(void)
 
 	glfwTerminate();
 
-
-    return 0;
+	return 0;
 }
 
 
 void init()
 {
-    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
-    {
-        if (key == GLFW_KEY_ESCAPE)
-            glfwSetWindowShouldClose(window, true);
-    });
+	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+		{
+			if (key == GLFW_KEY_ESCAPE)
+				glfwSetWindowShouldClose(window, true);
+		});
 
-    mazeGen = new MazeGenerator();
-    auto maze = mazeGen->Generate(10, 10);
+	mazeGen = new MazeGenerator();
+	auto maze = mazeGen->Generate(10, 10);
 
-    player = std::make_shared<GameObject>();
-    player->position = mazeGen->spawnPoint;
+	player = std::make_shared<GameObject>();
+	player->position = mazeGen->spawnPoint;
 
-    auto playerComponent = std::make_shared<PlayerComponent>(window);
-    player->addComponent(playerComponent);
-    player->addComponent(std::make_shared<CameraComponent>(window, &playerComponent->bIsRunning));
+	player->addComponent(std::make_shared<PlayerComponent>(window));
+	player->addComponent(std::make_shared<CameraComponent>(window));
 
-    for (auto row : maze) {
-        for (auto obj : row) {
-            objects.push_back(std::make_shared<GameObject>(obj->gameObject));
-        }
-    }
+	for (auto row : maze) {
+		for (auto obj : row) {
+			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
+		}
+	}
 }
 
 void update()
 {
-    double currentFrame = glfwGetTime();
-    float deltaTime = currentFrame - lastFrameTime;
-    lastFrameTime = currentFrame;
+	double currentFrame = glfwGetTime();
+	float deltaTime = currentFrame - lastFrameTime;
+	lastFrameTime = currentFrame;
 
-    for (auto& o : objects)
-        o->update((float)deltaTime);
+	for (auto& o : objects)
+		o->update((float)deltaTime);
 
-    player->update(deltaTime);
+	player->update(deltaTime);
+	auto cameraComponent = player->getComponent<CameraComponent>();
+	if (player->getComponent<PlayerComponent>()->bIsRunning) {
+		cameraComponent->changeFOV(deltaTime, true);
+	}
+	else {
+		cameraComponent->changeFOV(deltaTime, false);
+	}
 }
 
 void draw()
 {
-    glClearColor(0.3f, 0.4f, 0.6f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.3f, 0.4f, 0.6f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 
-    int viewport[4];
-    glGetIntegerv(GL_VIEWPORT, viewport);
-    auto cameraComponent = player->getComponent<CameraComponent>();
+	int viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	auto cameraComponent = player->getComponent<CameraComponent>();
 
-    glm::mat4 projection = glm::perspective(glm::radians(75.f), viewport[2] / (float)viewport[3], 0.01f, 1000.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(player->getComponent<CameraComponent>()->fov), viewport[2] / (float)viewport[3], 0.01f, 1000.0f);
 
-    tigl::shader->setProjectionMatrix(projection);
-    tigl::shader->setViewMatrix(cameraComponent->getMatrix());
-    tigl::shader->setModelMatrix(glm::mat4(1.0f));
+	tigl::shader->setProjectionMatrix(projection);
+	tigl::shader->setViewMatrix(cameraComponent->getMatrix());
+	tigl::shader->setModelMatrix(glm::mat4(1.0f));
 
-    tigl::shader->enableColor(true);
+	tigl::shader->enableColor(true);
 
-    for (auto& o : objects)
-        o->draw();
+	for (auto& o : objects)
+		o->draw();
 }
