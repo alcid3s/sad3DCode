@@ -164,6 +164,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CubeComponent.cpp" />
     <ClCompile Include="DrawComponent.cpp" />
+    <ClCompile Include="FlashlightComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MazeGenerator.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="CubeComponent.h" />
     <ClInclude Include="DrawComponent.h" />
     <ClInclude Include="enumType.h" />
+    <ClInclude Include="FlashlightComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="MazeGenerator.h" />
     <ClInclude Include="ObjModel.h" />

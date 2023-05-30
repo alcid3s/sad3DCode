@@ -55,6 +55,9 @@
     <Filter Include="Source Files\Components\AudioComponent">
       <UniqueIdentifier>{408b3bd2-09e9-46cb-a163-e244bfb1279a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\FlashlightComponent">
+      <UniqueIdentifier>{e20671e6-888c-4e22-8d87-1acfc136b8fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tigl.cpp">
@@ -102,6 +105,9 @@
     <ClCompile Include="AudioComponent.cpp">
       <Filter>Source Files\Components\AudioComponent</Filter>
     </ClCompile>
+    <ClCompile Include="FlashlightComponent.cpp">
+      <Filter>Source Files\Components\FlashlightComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tigl.h">
@@ -148,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="AudioComponent.h">
       <Filter>Source Files\Components\AudioComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="FlashlightComponent.h">
+      <Filter>Source Files\Components\FlashlightComponent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -193,7 +193,7 @@ void ObjModel::draw()
 	//      emit vertex
 
 	tigl::begin(GL_TRIANGLES);
-	for (auto group : groups) {
+	for (const auto& group : groups) {
 		if (!materials.empty()) {
 			MaterialInfo* material = materials[group->materialIndex];
 			if (material && material->texture) {
@@ -202,8 +202,8 @@ void ObjModel::draw()
 			}
 		}
 
-		for (auto face : group->faces) {
-			for (auto vertex : face.vertices) {
+		for (const auto& face : group->faces) {
+			for (const auto& vertex : face.vertices) {
 				//std::cout << "position: " << vertex.position << ", normal: " << vertex.normal << ", texcoord: " << vertex.texcoord << ".\n";
 				if (vertex.normal < 0 && vertex.texcoord < 0)
 					tigl::addVertex(tigl::Vertex::P(vertices[vertex.position]));

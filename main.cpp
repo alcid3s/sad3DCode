@@ -10,6 +10,7 @@
 #include "PlayerComponent.h"
 #include "CameraComponent.h"
 #include "AudioComponent.h"
+#include "FlashlightComponent.h"
 #include <memory>
 
 using tigl::Vertex;
@@ -29,6 +30,7 @@ void init();
 void update();
 void draw();
 void updatePlayer(float deltaTime);
+void enableFog(bool flag);
 
 int main(void)
 {
@@ -79,12 +81,26 @@ void init()
 	player->addComponent(std::make_shared<PlayerComponent>(window));
 	player->addComponent(std::make_shared<CameraComponent>(window));
 	player->addComponent(std::make_shared<AudioComponent>(AudioType::Footsteps));
+	player->addComponent(std::make_shared<FlashlightComponent>("resource/models/flashlight/flashlight.obj"));
 
 	// Adding all gameobjects the generate function created to the gameobjects list
 	for (auto row : maze) {
 		for (auto obj : row) {
 			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
 		}
+	}
+}
+
+// Enables fog into the world
+void enableFog(bool flag) {
+	if (flag) {
+		tigl::shader->enableFog(true);
+		tigl::shader->setFogColor(glm::vec3(.05f, .05f, .05f));
+		tigl::shader->setFogLinear(1, 4);
+		tigl::shader->setFogExp(1.5f);
+	}
+	else {
+		tigl::shader->enableFog(false);
 	}
 }
 
@@ -96,10 +112,13 @@ void updatePlayer(float deltaTime) {
 	auto cameraComponent = player->getComponent<CameraComponent>();
 	auto playerComponent = player->getComponent<PlayerComponent>();
 	auto audioComponent = player->getComponent<AudioComponent>();
+	auto flashlightComponent = player->getComponent<FlashlightComponent>();
 
 	// Letting the audio component know if there've been updates concerning the movement of the player
 	audioComponent->bIsRunning = playerComponent->bIsRunning;
 	audioComponent->bIsMoving = playerComponent->bMoving;
+
+	flashlightComponent->bIsRunning = playerComponent->bIsRunning;
 
 	// Change FOV according to the movement of the player
 	cameraComponent->changeFOV(deltaTime, playerComponent->bIsRunning);
@@ -132,9 +151,10 @@ void draw()
 	// Set projection matrix
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-	auto cameraComponent = player->getComponent<CameraComponent>();
 
 	glm::mat4 projection = glm::perspective(glm::radians(player->getComponent<CameraComponent>()->fov), viewport[2] / (float)viewport[3], 0.01f, 1000.0f);
+
+	auto cameraComponent = player->getComponent<CameraComponent>();
 
 	// Setting matrixes
 	tigl::shader->setProjectionMatrix(projection);
@@ -143,7 +163,12 @@ void draw()
 
 	tigl::shader->enableColor(true);
 
+	enableFog(true);
+
 	// Drawing all gameobjects
 	for (auto& o : objects)
 		o->draw();
+
+	// Drawing the flashlight of the player
+	player->getComponent<FlashlightComponent>()->draw();
 }
