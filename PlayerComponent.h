@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include <ctime>
 
 struct GLFWwindow;
 class GameObject;
@@ -13,6 +14,7 @@ public:
 
 	bool bIsRunning;
 	bool bMoving;
+	bool bForcedStopRunning;
 
 private:
 	GLFWwindow* window;
@@ -21,8 +23,12 @@ private:
 
 	bool bShiftPressed = false;
 	bool bWPressed = false;
+	bool bRecovering = false;
+
+	clock_t timeStarted = 0;
+	clock_t recoverTime = 0;
 private:
 	void move(float angle, float fac, float deltaTime);
 	void playerInput(float deltaTime);
-	void changeFOV(float deltaTime);
+	void checkMaxRunTime();
 };

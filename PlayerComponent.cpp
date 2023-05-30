@@ -1,7 +1,11 @@
 #include "PlayerComponent.h"
 #include "GameObject.h"
 #include <GLFW/glfw3.h>
-#include <iostream>
+#include <ctime>
+
+#define maxRunningTime 4
+#define maxRecoverTime 4
+
 PlayerComponent::PlayerComponent(GLFWwindow* window, float speed)
 	: window(window), speed(speed)
 {
@@ -23,6 +27,7 @@ void PlayerComponent::move(float angle, float fac, float deltaTime)
 void PlayerComponent::update(float deltaTime)
 {
 	playerInput(deltaTime);
+	checkMaxRunTime();
 }
 
 void PlayerComponent::playerInput(float deltaTime)
@@ -30,7 +35,7 @@ void PlayerComponent::playerInput(float deltaTime)
 	bMoving = false;
 	float multi = 1.f;
 	// multiplier for running
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS && !bRecovering) {
 		multi *= 3.f;
 		bShiftPressed = true;
 	}
@@ -69,13 +74,26 @@ void PlayerComponent::playerInput(float deltaTime)
 	{
 		gameObject->position.y += speed * 0.001f;
 	}
+}
 
-	// isRunning
-	if (bWPressed && bShiftPressed) {
+void PlayerComponent::checkMaxRunTime()
+{
+	if (bWPressed && bShiftPressed && !bIsRunning && !bRecovering) {
+		timeStarted = clock();
 		bIsRunning = true;
 	}
-	else  {
+	else if ((!bWPressed || !bShiftPressed) && bIsRunning) {
 		bIsRunning = false;
+	}
+
+	if (clock() - timeStarted > maxRunningTime * CLOCKS_PER_SEC && bIsRunning && !bRecovering) {
+		bRecovering = true;
+		bIsRunning = false;
+		recoverTime = clock();
+	}
+
+	if (clock() - recoverTime > maxRecoverTime * CLOCKS_PER_SEC && bRecovering) {
+		bRecovering = false;
 	}
 }
 
