@@ -4,19 +4,20 @@
 #include <glm/glm.hpp>
 #include <list>
 #include <memory>
+#include <tuple>
 
 class Component;
 class DrawComponent;
 class BoundingBoxComponent;
 
+template<typename T>
 class GameObject
 {
 	std::shared_ptr<DrawComponent> drawComponent;
 	std::list<std::shared_ptr<Component>> components;
 public:
-	GameObject();
+	GameObject(T data);
 	~GameObject();
-
 
 	glm::vec3 position;
 	glm::vec3 rotation = glm::vec3(0, 0, 0);
@@ -50,6 +51,7 @@ public:
 				return t != nullptr;
 			});
 	}
-
+private:
+	T* data;
 };
 

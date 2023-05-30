@@ -3,7 +3,8 @@
 #include "tigl.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-GameObject::GameObject()
+template<typename T>
+GameObject::GameObject(T data) : data(data)
 {
 }
 

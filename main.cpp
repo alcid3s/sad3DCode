@@ -20,10 +20,8 @@ using tigl::Vertex;
 GLFWwindow* window;
 
 std::shared_ptr<GameObject> player;
-
-MazeGenerator *mazeGen;
-
 std::list<std::shared_ptr<GameObject>> objects;
+MazeGenerator *mazeGen;
 double lastFrameTime = 0;
 
 
@@ -76,8 +74,10 @@ void init()
 
     player = std::make_shared<GameObject>();
     player->position = mazeGen->spawnPoint;
-    player->addComponent(std::make_shared<PlayerComponent>(window));
-    player->addComponent(std::make_shared<CameraComponent>(window));
+
+    auto playerComponent = std::make_shared<PlayerComponent>(window);
+    player->addComponent(playerComponent);
+    player->addComponent(std::make_shared<CameraComponent>(window, &playerComponent->bIsRunning));
 
     for (auto row : maze) {
         for (auto obj : row) {
@@ -107,9 +107,9 @@ void draw()
 
     int viewport[4];
     glGetIntegerv(GL_VIEWPORT, viewport);
-    glm::mat4 projection = glm::perspective(glm::radians(75.0f), viewport[2] / (float)viewport[3], 0.01f, 1000.0f);
-
     auto cameraComponent = player->getComponent<CameraComponent>();
+
+    glm::mat4 projection = glm::perspective(glm::radians(75.f), viewport[2] / (float)viewport[3], 0.01f, 1000.0f);
 
     tigl::shader->setProjectionMatrix(projection);
     tigl::shader->setViewMatrix(cameraComponent->getMatrix());
