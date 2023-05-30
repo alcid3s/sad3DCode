@@ -67,16 +67,20 @@ void init()
 				glfwSetWindowShouldClose(window, true);
 		});
 
+	// Initialise and draw a maze
 	mazeGen = new MazeGenerator();
 	auto maze = mazeGen->Generate(10, 10);
 
+	// Create player and sets it's position to the spawnpoint
 	player = std::make_shared<GameObject>();
 	player->position = mazeGen->spawnPoint;
 
+	// Adding components to the player
 	player->addComponent(std::make_shared<PlayerComponent>(window));
 	player->addComponent(std::make_shared<CameraComponent>(window));
 	player->addComponent(std::make_shared<AudioComponent>(AudioType::Footsteps));
 
+	// Adding all gameobjects the generate function created to the gameobjects list
 	for (auto row : maze) {
 		for (auto obj : row) {
 			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
@@ -84,52 +88,62 @@ void init()
 	}
 }
 
+// Functions to update the player
 void updatePlayer(float deltaTime) {
 	player->update(deltaTime);
+
+	// Getting components
 	auto cameraComponent = player->getComponent<CameraComponent>();
 	auto playerComponent = player->getComponent<PlayerComponent>();
-
 	auto audioComponent = player->getComponent<AudioComponent>();
+
+	// Letting the audio component know if there've been updates concerning the movement of the player
 	audioComponent->bIsRunning = playerComponent->bIsRunning;
 	audioComponent->bIsMoving = playerComponent->bMoving;
-	if (playerComponent->bIsRunning) {
-		cameraComponent->changeFOV(deltaTime, true);
-	}
-	else {
-		cameraComponent->changeFOV(deltaTime, false);
-	}
+
+	// Change FOV according to the movement of the player
+	cameraComponent->changeFOV(deltaTime, playerComponent->bIsRunning);
 }
+
 void update()
 {
+	// Getting deltatime
 	double currentFrame = glfwGetTime();
 	float deltaTime = currentFrame - lastFrameTime;
 	lastFrameTime = currentFrame;
 
+	// Updating gameobjects
 	for (auto& o : objects)
 		o->update((float)deltaTime);
 
+	// Updating player
 	updatePlayer(deltaTime);
 }
 
 void draw()
 {
-	glClearColor(0.3f, 0.4f, 0.6f, 1.0f);
+	// Draw dark background
+	glClearColor(0.05f, 0.05f, 0.05f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// Make sure not all sides of the vertices are visible to the player
 	glEnable(GL_DEPTH_TEST);
 
+	// Set projection matrix
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	auto cameraComponent = player->getComponent<CameraComponent>();
 
 	glm::mat4 projection = glm::perspective(glm::radians(player->getComponent<CameraComponent>()->fov), viewport[2] / (float)viewport[3], 0.01f, 1000.0f);
 
+	// Setting matrixes
 	tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(cameraComponent->getMatrix());
 	tigl::shader->setModelMatrix(glm::mat4(1.0f));
 
 	tigl::shader->enableColor(true);
 
+	// Drawing all gameobjects
 	for (auto& o : objects)
 		o->draw();
 }
