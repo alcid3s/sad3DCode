@@ -11,6 +11,7 @@
 #include "CameraComponent.h"
 #include "AudioComponent.h"
 #include "FlashlightComponent.h"
+#include "BoundingBoxComponent.h"
 #include <memory>
 
 using tigl::Vertex;
@@ -82,6 +83,7 @@ void init()
 	player->addComponent(std::make_shared<CameraComponent>(window));
 	player->addComponent(std::make_shared<AudioComponent>(AudioType::Footsteps));
 	player->addComponent(std::make_shared<FlashlightComponent>("resource/models/flashlight/flashlight.obj"));
+	player->addComponent(std::make_shared<BoundingBoxComponent>());
 
 	// Adding all gameobjects the generate function created to the gameobjects list
 	for (auto row : maze) {
