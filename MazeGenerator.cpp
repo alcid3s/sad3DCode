@@ -8,7 +8,7 @@
 #include <iostream>
 
 MazeGenerator::MazeGenerator() {
-	// added pointer of Texture to the vector.
+	// Added pointer of Texture to the vector.
 	mazeTextures.push_back(new Texture("resource/textures/Floor4.png"));
 	mazeTextures.push_back(new Texture("resource/textures/Bush_Texture4.png"));
 
@@ -17,6 +17,8 @@ MazeGenerator::MazeGenerator() {
 
 MazeGenerator::~MazeGenerator()
 {
+	mazeTextures.clear();
+	delete &mazeTextures;
 }
 
 std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const int& sizeOfMazeX, const int& sizeOfMazeZ)
@@ -28,21 +30,22 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 
 	srand(time(NULL));
 
-	// setup maze to traverse.
+	// Setup maze to traverse.
 	SetupMaze(sizeOfMazeX, sizeOfMazeZ);
 
-	// getting the starting tile.
+	// Getting the starting tile.
 	this->spawnGameObject = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1);
 	this->spawnGameObject->type = Type::Floor;
 	this->spawnGameObject->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
 	std::vector<std::shared_ptr<Cell>> visitedTiles;
 
-	// create maze with DFS algorithm
+	// Create maze with DFS algorithm
 	DepthFirstSearch(this->spawnGameObject, &visitedTiles);
 
-	// create a random endpoint somewhere not close to the spawnPoint.
+	// Create a random endpoint somewhere not close to the spawnPoint.
 	this->endTile = std::make_shared<GameObject>(visitedTiles.at(((visitedTiles.size() - 1) / 4) * 3).get()->gameObject);
 
+	// Fill empty spots of maze with walls
 	FillMaze(sizeOfMazeX, sizeOfMazeZ);
 
 	return this->maze;
