@@ -1,6 +1,10 @@
 #include "BoundingBoxComponent.h"
 #include <glm/gtx/rotate_vector.hpp>
 
+BoundingBoxComponent::BoundingBoxComponent() {
+
+}
+
 BoundingBoxComponent::BoundingBoxComponent(glm::vec3 min, glm::vec3 max) : min(min), max(max), lengths(min - max)
 {
 }

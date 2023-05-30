@@ -6,8 +6,8 @@
 #define maxRunningTime 4
 #define maxRecoverTime 4
 
-PlayerComponent::PlayerComponent(GLFWwindow* window, float speed)
-	: window(window), speed(speed)
+PlayerComponent::PlayerComponent(GLFWwindow* window, std::list<std::shared_ptr<GameObject>>& objects, float speed)
+	: window(window), speed(speed), bForcedStopRunning(false), bIsRunning(false), bMoving(false), obj(nullptr)
 {
 
 }

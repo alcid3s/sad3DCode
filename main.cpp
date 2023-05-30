@@ -88,6 +88,9 @@ void init()
 	// Adding all gameobjects the generate function created to the gameobjects list
 	for (auto row : maze) {
 		for (auto obj : row) {
+			glm::vec3 minimal = glm::vec3(obj->gameObject.position.x - .5f, obj->gameObject.position.y, obj->gameObject.position.z - .5f);
+			glm::vec3 maximal = glm::vec3(obj->gameObject.position.x + .5f, obj->gameObject.position.y, obj->gameObject.position.z + .5f);
+			obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
 			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
 		}
 	}
@@ -135,7 +138,7 @@ void update()
 
 	// Updating gameobjects
 	for (auto& o : objects)
-		o->update((float)deltaTime);
+		o->update(deltaTime);
 
 	// Updating player
 	updatePlayer(deltaTime);

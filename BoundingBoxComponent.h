@@ -5,6 +5,7 @@
 #include <memory>
 class BoundingBoxComponent : public Component {
 public:
+	BoundingBoxComponent();
 	BoundingBoxComponent(glm::vec3 min, glm::vec3 max);
 	~BoundingBoxComponent();
 

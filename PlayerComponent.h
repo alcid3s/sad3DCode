@@ -1,13 +1,15 @@
 #pragma once
 #include "Component.h"
 #include <ctime>
+#include <memory>
+#include <list>
 
 struct GLFWwindow;
 class GameObject;
 
 class PlayerComponent : public Component {
 public:
-	PlayerComponent(GLFWwindow* window, float speed =15);
+	PlayerComponent(GLFWwindow* window, std::list<std::shared_ptr<GameObject>>& objects, float speed = 15);
 	~PlayerComponent();
 
 	void update(float deltaTime) override;
