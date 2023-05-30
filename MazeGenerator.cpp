@@ -33,6 +33,7 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 
 	// getting the starting tile.
 	this->spawnGameObject = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1);
+	this->spawnGameObject->type = Type::Floor;
 	this->spawnGameObject->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
 	std::vector<std::shared_ptr<Cell>> visitedTiles;
 
@@ -41,6 +42,8 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 
 	// create a random endpoint somewhere not close to the spawnPoint.
 	this->endTile = std::make_shared<GameObject>(visitedTiles.at(((visitedTiles.size() - 1) / 4) * 3).get()->gameObject);
+
+	FillMaze(sizeOfMazeX, sizeOfMazeZ);
 
 	return this->maze;
 }
@@ -132,6 +135,20 @@ glm::vec3 MazeGenerator::SetSpawnPoint(const int& sizeX, const int& sizeZ) {
 	int num = rand() % possibleSpawnPoints.size();
 	glm::vec3 sPoint = -possibleSpawnPoints.at(num);
 	return sPoint;
+}
+
+void MazeGenerator::FillMaze(const int& sizeX, const int& sizeZ) {
+	for (int z = 0; z < sizeZ; z++) {
+		for (int x = 0; x < sizeX; x++)
+		{
+			auto cell = maze[z][x];
+			if (cell->type == Type::Empty) {
+				cell->type == Type::Wall;
+				cell->gameObject.position = glm::vec3(x, 0.f, z);
+				cell->gameObject.addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
+			}
+		}
+	}
 }
 
 bool MazeGenerator::IsEdge(const int& x, const int& z, const int& sizeX, const int& sizeZ) {

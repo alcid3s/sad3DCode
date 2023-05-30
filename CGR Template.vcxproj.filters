@@ -52,6 +52,9 @@
     <Filter Include="Source Files\Components\CameraComponent">
       <UniqueIdentifier>{6f6a71f1-2eae-4146-8a07-3c09d82f52c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\AudioComponent">
+      <UniqueIdentifier>{408b3bd2-09e9-46cb-a163-e244bfb1279a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tigl.cpp">
@@ -96,6 +99,9 @@
     <ClCompile Include="CameraComponent.cpp">
       <Filter>Source Files\Components\CameraComponent</Filter>
     </ClCompile>
+    <ClCompile Include="AudioComponent.cpp">
+      <Filter>Source Files\Components\AudioComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tigl.h">
@@ -139,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="CameraComponent.h">
       <Filter>Source Files\Components\CameraComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioComponent.h">
+      <Filter>Source Files\Components\AudioComponent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

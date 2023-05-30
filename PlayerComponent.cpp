@@ -1,9 +1,9 @@
 #include "PlayerComponent.h"
 #include "GameObject.h"
 #include <GLFW/glfw3.h>
-
+#include <iostream>
 PlayerComponent::PlayerComponent(GLFWwindow* window, float speed)
-	: window(window), speed(speed), bIsRunning(false)
+	: window(window), speed(speed)
 {
 
 }
@@ -15,6 +15,7 @@ PlayerComponent::~PlayerComponent()
 
 void PlayerComponent::move(float angle, float fac, float deltaTime)
 {
+	bMoving = true;
 	gameObject->position.x += (float)cos(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
 	gameObject->position.z += (float)sin(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
 }
@@ -26,6 +27,7 @@ void PlayerComponent::update(float deltaTime)
 
 void PlayerComponent::playerInput(float deltaTime)
 {
+	bMoving = false;
 	float multi = 1.f;
 	// multiplier for running
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
@@ -40,9 +42,10 @@ void PlayerComponent::playerInput(float deltaTime)
 		move(90, 0.05f * multi, deltaTime);
 		bWPressed = true;
 	}
-	else
+	else {
 		bWPressed = false;
-
+	}
+		
 	// backward
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		move(-90, 0.05f, deltaTime);
@@ -71,7 +74,7 @@ void PlayerComponent::playerInput(float deltaTime)
 	if (bWPressed && bShiftPressed) {
 		bIsRunning = true;
 	}
-	else {
+	else  {
 		bIsRunning = false;
 	}
 }

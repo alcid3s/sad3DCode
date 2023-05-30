@@ -6,12 +6,13 @@ class GameObject;
 
 class PlayerComponent : public Component {
 public:
-	PlayerComponent(GLFWwindow* window, float speed = 50);
+	PlayerComponent(GLFWwindow* window, float speed =15);
 	~PlayerComponent();
 
-	virtual void update(float deltaTime) override;
+	void update(float deltaTime) override;
 
 	bool bIsRunning;
+	bool bMoving;
 
 private:
 	GLFWwindow* window;

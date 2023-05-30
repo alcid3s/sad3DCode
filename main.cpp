@@ -9,6 +9,7 @@
 #include "CubeComponent.h"
 #include "PlayerComponent.h"
 #include "CameraComponent.h"
+#include "AudioComponent.h"
 #include <memory>
 
 using tigl::Vertex;
@@ -27,6 +28,7 @@ double lastFrameTime = 0;
 void init();
 void update();
 void draw();
+void updatePlayer(float deltaTime);
 
 int main(void)
 {
@@ -57,7 +59,6 @@ int main(void)
 	return 0;
 }
 
-
 void init()
 {
 	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -74,6 +75,7 @@ void init()
 
 	player->addComponent(std::make_shared<PlayerComponent>(window));
 	player->addComponent(std::make_shared<CameraComponent>(window));
+	player->addComponent(std::make_shared<AudioComponent>(AudioType::Footsteps));
 
 	for (auto row : maze) {
 		for (auto obj : row) {
@@ -82,6 +84,21 @@ void init()
 	}
 }
 
+void updatePlayer(float deltaTime) {
+	player->update(deltaTime);
+	auto cameraComponent = player->getComponent<CameraComponent>();
+	auto playerComponent = player->getComponent<PlayerComponent>();
+
+	auto audioComponent = player->getComponent<AudioComponent>();
+	audioComponent->bIsRunning = playerComponent->bIsRunning;
+	audioComponent->bIsMoving = playerComponent->bMoving;
+	if (playerComponent->bIsRunning) {
+		cameraComponent->changeFOV(deltaTime, true);
+	}
+	else {
+		cameraComponent->changeFOV(deltaTime, false);
+	}
+}
 void update()
 {
 	double currentFrame = glfwGetTime();
@@ -91,14 +108,7 @@ void update()
 	for (auto& o : objects)
 		o->update((float)deltaTime);
 
-	player->update(deltaTime);
-	auto cameraComponent = player->getComponent<CameraComponent>();
-	if (player->getComponent<PlayerComponent>()->bIsRunning) {
-		cameraComponent->changeFOV(deltaTime, true);
-	}
-	else {
-		cameraComponent->changeFOV(deltaTime, false);
-	}
+	updatePlayer(deltaTime);
 }
 
 void draw()
