@@ -35,7 +35,7 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 	SetupMaze(sizeOfMazeX, sizeOfMazeZ);
 
 	// Getting the starting tile.
-	this->spawnGameObject = maze.at((int)spawnPoint.z * -1).at((int)spawnPoint.x * -1);
+	this->spawnGameObject = maze.at((int)-spawnPoint.z).at((int)-spawnPoint.x);
 	this->spawnGameObject->type = Type::Floor;
 	this->spawnGameObject->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
 	std::vector<std::shared_ptr<Cell>> visitedTiles;
@@ -111,10 +111,6 @@ void MazeGenerator::SetupMaze(const int& sizeOfMazeX, const int& sizeOfMazeZ)
 				cell.visited = true;
 				cell.gameObject.position = glm::vec3(x, 0.f, z);
 
-				glm::vec3 min = glm::vec3(x - .5f, 0.f, z - .5f);
-				glm::vec3 max = glm::vec3(x + .5f, 0.f, z + .5f);
-
-				cell.gameObject.addComponent(std::make_shared<BoundingBoxComponent>(min, max));
 				cell.gameObject.addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
 				cell.type = Type::Edge;
 			}

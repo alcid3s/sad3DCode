@@ -14,6 +14,7 @@
 #include "BoundingBoxComponent.h"
 #include <memory>
 
+#include <iostream>
 using tigl::Vertex;
 
 #pragma comment(lib, "glfw3.lib")
@@ -84,16 +85,20 @@ void init()
 	player->addComponent(std::make_shared<AudioComponent>(AudioType::Footsteps));
 	player->addComponent(std::make_shared<FlashlightComponent>("resource/models/flashlight/flashlight.obj"));
 
-	glm::vec3 min = glm::vec3(player->position.x - .2f, player->position.y, player->position.z - .2f);
-	glm::vec3 max = glm::vec3(player->position.x + .2f, player->position.y, player->position.z + .2f);
+	glm::vec3 min = glm::vec3(-.1f, 0, -.1f);
+	glm::vec3 max = glm::vec3( .1f, 0,  .1f);
 	player->addComponent(std::make_shared<BoundingBoxComponent>(min, max));
 
 	// Adding all gameobjects the generate function created to the gameobjects list
 	for (auto row : maze) {
 		for (auto obj : row) {
-			glm::vec3 minimal = glm::vec3(obj->gameObject.position.x - .5f, obj->gameObject.position.y, obj->gameObject.position.z - .5f);
-			glm::vec3 maximal = glm::vec3(obj->gameObject.position.x + .5f, obj->gameObject.position.y, obj->gameObject.position.z + .5f);
-			obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
+			if (obj->type == Type::Wall || obj->type == Type::Edge) {
+				//std::cout << "added obj: (" << obj->gameObject.position.x << "," << obj->gameObject.position.y << "," << obj->gameObject.position.z << ")\n";
+				glm::vec3 minimal = glm::vec3(- .5f, 0, - .5f);
+				glm::vec3 maximal = glm::vec3(.5f, 0, .5f);
+				obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
+			}
+
 			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
 		}
 	}
