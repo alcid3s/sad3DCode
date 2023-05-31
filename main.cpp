@@ -82,7 +82,7 @@ void init()
 	// Adding components to the player
 	player->addComponent(std::make_shared<PlayerComponent>(window));
 	player->addComponent(std::make_shared<CameraComponent>(window));
-	player->addComponent(std::make_shared<AudioComponent>(AudioType::Footsteps));
+	player->addComponent(std::make_shared<AudioComponent>(AudioType::Player));
 	player->addComponent(std::make_shared<FlashlightComponent>("resource/models/flashlight/flashlight.obj"));
 
 	glm::vec3 min = glm::vec3(-.1f, 0, -.1f);
@@ -136,6 +136,7 @@ void updatePlayer(float deltaTime) {
 	// Letting the audio component know if there've been updates concerning the movement of the player
 	audioComponent->bIsRunning = playerComponent->bIsRunning;
 	audioComponent->bIsMoving = playerComponent->bMoving;
+	audioComponent->bPlayOutOfBreathSound = playerComponent->bPlayOutOfBreathSound;
 
 	flashlightComponent->bIsRunning = playerComponent->bIsRunning;
 

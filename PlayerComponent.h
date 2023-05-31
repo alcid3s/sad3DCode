@@ -20,6 +20,7 @@ public:
 	bool bIsRunning;
 	bool bMoving;
 	bool bForcedStopRunning;
+	bool bPlayOutOfBreathSound;
 
 private:
 	GLFWwindow* window;

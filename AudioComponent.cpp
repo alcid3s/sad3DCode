@@ -2,11 +2,24 @@
 #include "GameObject.h"
 #include <tuple>
 
-const int amountOfFootsteps = 7;
 AudioComponent::AudioComponent(AudioType type) : type(type)
 {
 	switch (type) {
-	case AudioType::Footsteps:
+	case AudioType::Player:
+		for (int i = 1; i <= amountOfOutOfBreathSounds; i++) {
+			sf::Sound* sound = new sf::Sound();
+			sf::SoundBuffer* buffer = new sf::SoundBuffer();
+
+			std::string file = "resource/sounds/characterSounds/outOfBreath" + std::to_string(i) + ".wav";
+
+			buffer->loadFromFile(file);
+			sound->setBuffer(*buffer);
+			sound->setMinDistance(5.f);
+			sound->setAttenuation(0.5f);
+
+			this->soundsList.push_back(std::make_tuple(*sound, *buffer));
+		}
+
 		for (int i = 1; i <= amountOfFootsteps; i++) {
 			sf::Sound* sound = new sf::Sound();
 			sf::SoundBuffer* buffer = new sf::SoundBuffer();
@@ -14,13 +27,11 @@ AudioComponent::AudioComponent(AudioType type) : type(type)
 			std::string file = "resource/sounds/footsteps/wav/footstep" + std::to_string(i) + ".wav";
 
 			buffer->loadFromFile(file);
-			sound->setPitch(1.f);
-			sound->setVolume(20.f);
 			sound->setBuffer(*buffer);
 			sound->setMinDistance(5.f);
 			sound->setAttenuation(0.5f);
 
-			this->footsteps.push_back(std::make_tuple(*sound, *buffer));
+			this->soundsList.push_back(std::make_tuple(*sound, *buffer));
 		}
 		break;
 	case AudioType::Enemy:
@@ -36,26 +47,53 @@ AudioComponent::~AudioComponent()
 
 void AudioComponent::update(float deltaTime) {
 	switch (type) {
-	case AudioType::Footsteps:
+	case AudioType::Player:
+		if (bPlayOutOfBreathSound) {
+			playOutOfBreathSound();
+		}
+
 		if (bIsMoving) {
 			playFootsteps();
 		}
 		break;
 	}
+
+}
+
+void AudioComponent::playOutOfBreathSound() {
+	sf::Sound* sound = &std::get<sf::Sound>(soundsList[soundPosition]);
+
+	sf::Listener::setDirection(gameObject->position.x, gameObject->position.y, gameObject->position.z);
+
+	// get random outOfBreath sound
+	this->soundPosition = rand() % (soundsList.size() - amountOfFootsteps);
+
+	// set pitch and volume of this sound
+	sound->setPitch(1.f);
+	sound->setVolume(40.f);
+
+	// give sound the data for the sound from buffer in tuple.
+	sound->setBuffer(std::get<sf::SoundBuffer>(soundsList[soundPosition]));
+
+	// set origin from the sound
+	sound->setPosition(gameObject->position.x, gameObject->position.y, gameObject->position.z);
+
+	// play the sound
+	sound->play();
 }
 
 void AudioComponent::playFootsteps()
 {
 	// gettings sound from tuple
-	sf::Sound* sound = &std::get<sf::Sound>(footsteps[soundPosition]);
+	sf::Sound* sound = &std::get<sf::Sound>(soundsList[soundPosition]);
 
 	// check if sound is playing
 	if (sound->getStatus() != sf::Sound::Playing) {
 
 		sf::Listener::setDirection(gameObject->position.x, gameObject->position.y, gameObject->position.z);
 
-		// get random walk sound
-		this->soundPosition = rand() % footsteps.size();
+		// get random walk sound, but because out of breath sounds was first. It needs to exclude those from the footsteps
+		this->soundPosition = (rand() % (soundsList.size() - amountOfOutOfBreathSounds)) + amountOfOutOfBreathSounds;
 
 		if (bIsRunning) {
 			sound->setVolume(sound->getVolume() + 10.f);
@@ -67,9 +105,9 @@ void AudioComponent::playFootsteps()
 		}
 
 		// give sound the data for the sound from buffer in tuple.
-		sound->setBuffer(std::get<sf::SoundBuffer>(footsteps[soundPosition]));
+		sound->setBuffer(std::get<sf::SoundBuffer>(soundsList[soundPosition]));
 
-		// set origin from the sound
+		// set origin from the sound (on the feet of the player).
 		sound->setPosition(gameObject->position.x, gameObject->position.y - 1, gameObject->position.z);
 
 		// play the sound

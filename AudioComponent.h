@@ -4,7 +4,6 @@
 #include <vector>
 #include <tuple>
 enum AudioType {
-	Footsteps,
 	Player,
 	Enemy,
 	Ambience
@@ -20,10 +19,17 @@ public:
 	bool bIsRunning = false;
 	bool bIsMoving = false;
 
+	bool bPlayOutOfBreathSound = false;
+
 protected:
-	void playFootsteps();
-	std::vector<std::tuple<sf::Sound, sf::SoundBuffer>> footsteps;
+	virtual void playFootsteps();
+	virtual void playOutOfBreathSound();
+
+	std::vector<std::tuple<sf::Sound, sf::SoundBuffer>> soundsList;
 private:
 	AudioType type;
 	int soundPosition = 0;
+
+	const int amountOfFootsteps = 7;
+	const int amountOfOutOfBreathSounds = 1;
 };

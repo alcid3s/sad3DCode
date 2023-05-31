@@ -8,7 +8,7 @@
 #define maxRecoverTime 4
 
 PlayerComponent::PlayerComponent(GLFWwindow* window, float speed)
-	: window(window), speed(speed), bForcedStopRunning(false), bIsRunning(false), bMoving(false), obj(nullptr)
+	: window(window), speed(speed), bForcedStopRunning(false), bIsRunning(false), bMoving(false), obj(nullptr), bPlayOutOfBreathSound(false)
 {
 
 }
@@ -109,6 +109,9 @@ void PlayerComponent::playerInput(float deltaTime)
 
 void PlayerComponent::checkMaxRunTime()
 {
+	if (bPlayOutOfBreathSound)
+		bPlayOutOfBreathSound = false;
+
 	if (bWPressed && bShiftPressed && !bIsRunning && !bRecovering) {
 		timeStarted = clock();
 		bIsRunning = true;
@@ -119,6 +122,7 @@ void PlayerComponent::checkMaxRunTime()
 
 	if (clock() - timeStarted > maxRunningTime * CLOCKS_PER_SEC && bIsRunning && !bRecovering) {
 		bRecovering = true;
+		bPlayOutOfBreathSound = true;
 		bIsRunning = false;
 		recoverTime = clock();
 	}
