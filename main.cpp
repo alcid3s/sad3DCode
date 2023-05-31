@@ -12,6 +12,7 @@
 #include "AudioComponent.h"
 #include "FlashlightComponent.h"
 #include "BoundingBoxComponent.h"
+#include "CollisionComponent.h"
 #include <memory>
 
 using tigl::Vertex;
@@ -83,7 +84,10 @@ void init()
 	player->addComponent(std::make_shared<CameraComponent>(window));
 	player->addComponent(std::make_shared<AudioComponent>(AudioType::Footsteps));
 	player->addComponent(std::make_shared<FlashlightComponent>("resource/models/flashlight/flashlight.obj"));
-	player->addComponent(std::make_shared<BoundingBoxComponent>());
+
+	glm::vec3 min = glm::vec3(player->position.x - .2f, player->position.y, player->position.z - .2f);
+	glm::vec3 max = glm::vec3(player->position.x + .2f, player->position.y, player->position.z + .2f);
+	player->addComponent(std::make_shared<BoundingBoxComponent>(min, max));
 
 	// Adding all gameobjects the generate function created to the gameobjects list
 	for (auto row : maze) {
@@ -91,6 +95,7 @@ void init()
 			glm::vec3 minimal = glm::vec3(obj->gameObject.position.x - .5f, obj->gameObject.position.y, obj->gameObject.position.z - .5f);
 			glm::vec3 maximal = glm::vec3(obj->gameObject.position.x + .5f, obj->gameObject.position.y, obj->gameObject.position.z + .5f);
 			obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
+			obj->gameObject.addComponent(std::make_shared<CollisionComponent>());
 			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
 		}
 	}
@@ -111,11 +116,17 @@ void enableFog(bool flag) {
 
 // Functions to update the player
 void updatePlayer(float deltaTime) {
+	// getting player component
+	auto playerComponent = player->getComponent<PlayerComponent>();
+
+	// updating player
 	player->update(deltaTime);
 
-	// Getting components
+	// checking collision of player. If no collision occurs move is validated.
+	playerComponent->checkCollision(objects);
+
+	// Getting the rest of the components
 	auto cameraComponent = player->getComponent<CameraComponent>();
-	auto playerComponent = player->getComponent<PlayerComponent>();
 	auto audioComponent = player->getComponent<AudioComponent>();
 	auto flashlightComponent = player->getComponent<FlashlightComponent>();
 

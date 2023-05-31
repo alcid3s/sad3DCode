@@ -1,12 +1,13 @@
 #include "PlayerComponent.h"
 #include "GameObject.h"
+#include "CollisionComponent.h"
 #include <GLFW/glfw3.h>
 #include <ctime>
 
 #define maxRunningTime 4
 #define maxRecoverTime 4
 
-PlayerComponent::PlayerComponent(GLFWwindow* window, std::list<std::shared_ptr<GameObject>>& objects, float speed)
+PlayerComponent::PlayerComponent(GLFWwindow* window, float speed)
 	: window(window), speed(speed), bForcedStopRunning(false), bIsRunning(false), bMoving(false), obj(nullptr)
 {
 
@@ -19,15 +20,39 @@ PlayerComponent::~PlayerComponent()
 
 void PlayerComponent::move(float angle, float fac, float deltaTime)
 {
-	bMoving = true;
-	gameObject->position.x += (float)cos(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
-	gameObject->position.z += (float)sin(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
+	this->bMoving = true;
+	this->oldPosition = gameObject->position;
+
+	tempPosition.x = gameObject->position.x + (float)cos(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
+	tempPosition.z = gameObject->position.z + (float)sin(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
 }
 
 void PlayerComponent::update(float deltaTime)
 {
 	playerInput(deltaTime);
 	checkMaxRunTime();
+}
+
+bool PlayerComponent::checkCollision(std::list<std::shared_ptr<GameObject>>& objects) {
+	bool collides = false;
+	for (auto obj : objects) {
+		if (obj->getComponent<CollisionComponent>()) {
+			// if actually colliding
+			if (obj->getComponent<CollisionComponent>()->isColliding(gameObject->getComponent<BoundingBoxComponent>())) {
+				collides = true;
+			}
+		}
+	}
+
+	if (collides) {
+		gameObject->position = this->oldPosition;
+		this->tempPosition = this->oldPosition;
+	}
+	else {
+		gameObject->position = this->tempPosition;
+	}
+
+	return collides;
 }
 
 void PlayerComponent::playerInput(float deltaTime)

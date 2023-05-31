@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "PlaneComponent.h"
 #include "CubeComponent.h"
+#include "BoundingBoxComponent.h"
 
 #include <iostream>
 
@@ -18,7 +19,7 @@ MazeGenerator::MazeGenerator() {
 MazeGenerator::~MazeGenerator()
 {
 	mazeTextures.clear();
-	delete &mazeTextures;
+	delete& mazeTextures;
 }
 
 std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const int& sizeOfMazeX, const int& sizeOfMazeZ)
@@ -109,6 +110,11 @@ void MazeGenerator::SetupMaze(const int& sizeOfMazeX, const int& sizeOfMazeZ)
 			if (IsEdge(x, z, sizeOfMazeX, sizeOfMazeZ)) {
 				cell.visited = true;
 				cell.gameObject.position = glm::vec3(x, 0.f, z);
+
+				glm::vec3 min = glm::vec3(x - .5f, 0.f, z - .5f);
+				glm::vec3 max = glm::vec3(x + .5f, 0.f, z + .5f);
+
+				cell.gameObject.addComponent(std::make_shared<BoundingBoxComponent>(min, max));
 				cell.gameObject.addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
 				cell.type = Type::Edge;
 			}

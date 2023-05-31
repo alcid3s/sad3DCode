@@ -7,5 +7,5 @@ class CollisionComponent : public Component {
 public:
 	CollisionComponent();
 	~CollisionComponent();
-	bool isColliding(std::list<std::shared_ptr<GameObject>>& objects, std::shared_ptr<BoundingBoxComponent> player);
+	bool isColliding(std::shared_ptr<BoundingBoxComponent> player);
 };
