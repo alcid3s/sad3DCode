@@ -35,7 +35,7 @@ void FlashlightComponent::updateFlashlight() {
 		ret = glm::translate(ret, flashPos);
 
 		// rotate camera in right direction.
-		ret = glm::rotate(ret, gameObject->rotation.x, glm::vec3(1, 0, 0));
+		ret = glm::rotate(ret, -gameObject->rotation.x, glm::vec3(1, 0, 0));
 		ret = glm::rotate(ret, -gameObject->rotation.y + 2.7f, glm::vec3(0, 1, 0));
 
 		// place camera a bit in front of camera
