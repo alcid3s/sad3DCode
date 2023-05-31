@@ -10,7 +10,7 @@ class Component;
 class DrawComponent;
 class BoundingBoxComponent;
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 	std::shared_ptr<DrawComponent> drawComponent;
 	std::list<std::shared_ptr<Component>> components;
@@ -26,7 +26,6 @@ public:
 	std::list<std::shared_ptr<Component>> getComponents();
 	void update(float deltaTime);
 	void draw(const glm::mat4 & = glm::mat4(1.0f));
-
 
 	template<class T>
 	std::shared_ptr<T> getComponent()
@@ -48,6 +47,9 @@ public:
 				T* t = dynamic_cast<T*>(c);
 				return t != nullptr;
 			});
+	}
+	std::shared_ptr<GameObject> getSharedPtr() {
+		return shared_from_this();
 	}
 };
 

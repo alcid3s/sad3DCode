@@ -8,6 +8,10 @@ CollisionComponent::~CollisionComponent()
 {
 }
 
-bool CollisionComponent::isColliding(std::shared_ptr<BoundingBoxComponent> player) {
-        return (player->collide(std::make_shared<GameObject>(gameObject)));   
+bool CollisionComponent::isColliding(std::shared_ptr<BoundingBoxComponent> obj) {
+       return (obj->collide(gameObject->getSharedPtr()));   
+}
+
+void CollisionComponent::update(float deltaTime)
+{
 }

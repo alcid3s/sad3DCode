@@ -13,9 +13,9 @@ BoundingBoxComponent::~BoundingBoxComponent()
 {
 }
 
-bool BoundingBoxComponent::collide(std::shared_ptr<GameObject> player)
+bool BoundingBoxComponent::collide(std::shared_ptr<GameObject> obj)
 {
-    auto boundingBoxComponent = player->getComponent<BoundingBoxComponent>();
+    auto boundingBoxComponent = obj->getComponent<BoundingBoxComponent>();
     if (!boundingBoxComponent)
         return false;
 
@@ -24,8 +24,8 @@ bool BoundingBoxComponent::collide(std::shared_ptr<GameObject> player)
 
     auto corners = getCorners(cubeCorner1, cubeCorner2);
 
-    auto checkingCubeCorner1 = player->position + boundingBoxComponent->min;
-    auto checkingCubeCorner2 = player->position + boundingBoxComponent->max;
+    auto checkingCubeCorner1 = obj->position + boundingBoxComponent->min;
+    auto checkingCubeCorner2 = obj->position + boundingBoxComponent->max;
 
     for (int i = 0; i < corners->length(); i++) {
         if (isColliding(corners[i], checkingCubeCorner1, checkingCubeCorner2)) {

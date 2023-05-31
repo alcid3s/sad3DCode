@@ -1,6 +1,6 @@
 #include "PlayerComponent.h"
 #include "GameObject.h"
-#include "CollisionComponent.h"
+#include "BoundingBoxComponent.h"
 #include <GLFW/glfw3.h>
 #include <ctime>
 
@@ -23,8 +23,8 @@ void PlayerComponent::move(float angle, float fac, float deltaTime)
 	this->bMoving = true;
 	this->oldPosition = gameObject->position;
 
-	tempPosition.x = gameObject->position.x + (float)cos(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
-	tempPosition.z = gameObject->position.z + (float)sin(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
+	this->tempPosition.x = gameObject->position.x + (float)cos(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
+	this->tempPosition.z = gameObject->position.z + (float)sin(gameObject->rotation.y + glm::radians(angle)) * fac * speed * deltaTime;
 }
 
 void PlayerComponent::update(float deltaTime)
@@ -35,12 +35,13 @@ void PlayerComponent::update(float deltaTime)
 
 bool PlayerComponent::checkCollision(std::list<std::shared_ptr<GameObject>>& objects) {
 	bool collides = false;
+	if (!gameObject->getComponent<BoundingBoxComponent>()) {
+		return false;
+	}
 	for (auto obj : objects) {
-		if (obj->getComponent<CollisionComponent>()) {
-			// if actually colliding
-			if (obj->getComponent<CollisionComponent>()->isColliding(gameObject->getComponent<BoundingBoxComponent>())) {
-				collides = true;
-			}
+		if (gameObject->getComponent<BoundingBoxComponent>()->collide(obj)) {
+			collides = true;
+			break;
 		}
 	}
 

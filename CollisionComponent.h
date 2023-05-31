@@ -8,4 +8,6 @@ public:
 	CollisionComponent();
 	~CollisionComponent();
 	bool isColliding(std::shared_ptr<BoundingBoxComponent> player);
+
+	void update(float deltaTime) override;
 };

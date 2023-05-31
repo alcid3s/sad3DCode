@@ -12,7 +12,6 @@
 #include "AudioComponent.h"
 #include "FlashlightComponent.h"
 #include "BoundingBoxComponent.h"
-#include "CollisionComponent.h"
 #include <memory>
 
 using tigl::Vertex;
@@ -95,7 +94,6 @@ void init()
 			glm::vec3 minimal = glm::vec3(obj->gameObject.position.x - .5f, obj->gameObject.position.y, obj->gameObject.position.z - .5f);
 			glm::vec3 maximal = glm::vec3(obj->gameObject.position.x + .5f, obj->gameObject.position.y, obj->gameObject.position.z + .5f);
 			obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
-			obj->gameObject.addComponent(std::make_shared<CollisionComponent>());
 			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
 		}
 	}

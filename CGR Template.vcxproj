@@ -162,7 +162,6 @@
     <ClCompile Include="AudioComponent.cpp" />
     <ClCompile Include="BoundingBoxComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
-    <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CubeComponent.cpp" />
     <ClCompile Include="DrawComponent.cpp" />
@@ -183,7 +182,6 @@
     <ClInclude Include="AudioComponent.h" />
     <ClInclude Include="BoundingBoxComponent.h" />
     <ClInclude Include="CameraComponent.h" />
-    <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CubeComponent.h" />
     <ClInclude Include="DrawComponent.h" />

@@ -10,7 +10,7 @@ public:
 	~BoundingBoxComponent();
 
 	void update(float deltaTime) override;
-	bool collide(std::shared_ptr<GameObject> player);
+	bool collide(std::shared_ptr<GameObject> obj);
 
 	glm::vec3 min;
 	glm::vec3 max;
