@@ -3,7 +3,6 @@
 #include "BoundingBoxComponent.h"
 #include <GLFW/glfw3.h>
 #include <ctime>
-#include <iostream>
 
 #define maxRunningTime 4
 #define maxRecoverTime 4
@@ -49,7 +48,6 @@ bool PlayerComponent::checkCollision(std::list<std::shared_ptr<GameObject>>& obj
 	for (auto& obj : objects) {
 		if (gameObject->getComponent<BoundingBoxComponent>()->collide(obj)) {
 			collides = true;
-			// std::cout << "colliding with: (" << obj->position.x << "," << obj->position.y << "," << obj->position.z << "), position of player is: (" << tempPosition.x << "," << tempPosition.y << "," << tempPosition.z << ")\n";;
 			break;
 		}
 	}
@@ -57,8 +55,6 @@ bool PlayerComponent::checkCollision(std::list<std::shared_ptr<GameObject>>& obj
 	if (collides) {
 		gameObject->position = this->oldPosition;
 	}
-
-	// std::cout << "player pos: (" << tempPosition.x << "," << tempPosition.y << "," <<tempPosition.z << ")\n";
 
 	this->tempPosition = glm::vec3(0, 0, 0);
 

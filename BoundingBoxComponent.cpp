@@ -3,7 +3,6 @@
 #include <array>
 #include <algorithm>
 
-#include <iostream>
 BoundingBoxComponent::BoundingBoxComponent() {
 
 }
@@ -32,7 +31,6 @@ bool BoundingBoxComponent::collide(std::shared_ptr<GameObject> obj)
 
 	for (int i = 0; i < corners.size(); i++) {
 		if (isColliding(corners[i], checkingCubeCorner1, checkingCubeCorner2)) {
-			std::cout << "corners[i]: (" << corners[i].x << "," << corners[i].y << "," << corners[i].z << "). Comparing with: (" << checkingCubeCorner1.x << "," << checkingCubeCorner1.y << "," << checkingCubeCorner1.z << "). And: (" << checkingCubeCorner2.x << "," << checkingCubeCorner2.y << "," << checkingCubeCorner2.z << ").\n";
 			return true;
 		}
 	}
