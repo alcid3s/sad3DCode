@@ -12,6 +12,7 @@
 #include "AudioComponent.h"
 #include "FlashlightComponent.h"
 #include "BoundingBoxComponent.h"
+#include "EnemyComponent.h"
 #include <memory>
 
 #include <iostream>
@@ -24,6 +25,8 @@ using tigl::Vertex;
 GLFWwindow* window;
 
 std::shared_ptr<GameObject> player;
+std::shared_ptr<GameObject> enemy;
+
 std::list<std::shared_ptr<GameObject>> objects;
 MazeGenerator* mazeGen;
 double lastFrameTime = 0;
@@ -102,6 +105,10 @@ void init()
 			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
 		}
 	}
+
+	enemy = std::make_shared<GameObject>();
+	enemy->position = mazeGen->enemySpawnTile->position;
+	enemy->addComponent(std::make_shared<EnemyComponent>(objects));
 }
 
 // Enables fog into the world
@@ -157,6 +164,9 @@ void update()
 
 	// Updating player
 	updatePlayer(deltaTime);
+
+	// updating enemy
+	enemy->update(deltaTime);
 }
 
 void draw()
@@ -183,12 +193,15 @@ void draw()
 
 	tigl::shader->enableColor(true);
 
-	enableFog(true);
+	// enableFog(true);
 
 	// Drawing all gameobjects
 	for (auto& o : objects)
 		o->draw();
 
 	// Drawing the flashlight of the player
-	player->getComponent<FlashlightComponent>()->draw();
+	player->draw();
+
+	// Drawing enemy
+	enemy->draw();
 }
