@@ -9,6 +9,7 @@ Texture::Texture(const std::string& path)
 	// flips texture vertically. Bottom left of image is 0,0 for OpenGL
 	stbi_set_flip_vertically_on_load(1);
 	t_Buffer = stbi_load(path.c_str(), &t_Width, &t_Height, &t_BPP, 4);
+
 	if (t_Buffer == nullptr)
 	{
 		std::cout << "ERROR LOADING TEXTURE: " << stbi_failure_reason() << std::endl;

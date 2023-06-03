@@ -211,7 +211,7 @@ void draw()
 
 	tigl::shader->enableColor(true);
 
-	// enableFog(true);
+	enableFog(true);
 
 	// Drawing all gameobjects
 	for (auto& o : objects)

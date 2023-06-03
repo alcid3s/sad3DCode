@@ -15,7 +15,6 @@ public:
 	void draw() override;
 private:
 	Texture* texture;
-
 	glm::mat4 mat;
 private:
 	void bindHUD();

@@ -55,7 +55,7 @@ void CameraComponent::changeFOV(float deltaTime, bool running)
 		}
 	}
 	else {
-		if (fov > 80.f) {
+		if (fov > 75.f) {
 			fov -= 50.f * deltaTime;
 		}
 	}
