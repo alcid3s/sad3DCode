@@ -90,13 +90,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\SFML\include;$(SolutionDir)lib\glm;$(SolutionDir)lib\glew-2.1.0\include;$(SolutionDir)lib\glfw-3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\GL;$(SolutionDir)lib\SFML\include;$(SolutionDir)lib\glm;$(SolutionDir)lib\glew-2.1.0\include;$(SolutionDir)lib\glfw-3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\SFML\lib;$(SolutionDir)lib\glfw-3.3.8\$(Platform);$(SolutionDir)lib\glew-2.1.0\lib\Release\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\GL\;$(SolutionDir)lib\SFML\lib;$(SolutionDir)lib\glfw-3.3.8\$(Platform);$(SolutionDir)lib\glew-2.1.0\lib\Release\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -108,13 +108,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\SFML\include;$(SolutionDir)lib\glm;$(SolutionDir)lib\glew-2.1.0\include;$(SolutionDir)lib\glfw-3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\GL;$(SolutionDir)lib\SFML\include;$(SolutionDir)lib\glm;$(SolutionDir)lib\glew-2.1.0\include;$(SolutionDir)lib\glfw-3.3.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\SFML\lib;$(SolutionDir)lib\glfw-3.3.8\$(Platform);$(SolutionDir)lib\glew-2.1.0\lib\Release\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\GL\;$(SolutionDir)lib\SFML\lib;$(SolutionDir)lib\glfw-3.3.8\$(Platform);$(SolutionDir)lib\glew-2.1.0\lib\Release\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -169,6 +169,7 @@
     <ClCompile Include="EnemyComponent.cpp" />
     <ClCompile Include="FlashlightComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HUDComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MazeGenerator.cpp" />
     <ClCompile Include="ObjModel.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="enumType.h" />
     <ClInclude Include="FlashlightComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HUDComponent.h" />
     <ClInclude Include="MazeGenerator.h" />
     <ClInclude Include="ObjModel.h" />
     <ClInclude Include="PlaneComponent.h" />

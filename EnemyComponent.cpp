@@ -12,7 +12,6 @@
 
 EnemyComponent::EnemyComponent(std::list<std::shared_ptr<GameObject>>& objects, float speed, const std::string& path) : objects(objects), speed(speed)
 {
-	std::cout << "ptr: " << &objects << "\n";
 	for (auto& obj : objects) {
 		if (obj->type == Type::Floor) {
 			floors.push_back(obj);

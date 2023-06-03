@@ -49,7 +49,7 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 	SetEnemySpawnPoint(sizeOfMazeX, sizeOfMazeZ);
 
 	// Fill empty spots of maze with walls
-	// FillMaze(sizeOfMazeX, sizeOfMazeZ);
+	FillMaze(sizeOfMazeX, sizeOfMazeZ);
 
 	return this->maze;
 }

@@ -11,7 +11,7 @@ Texture::Texture(const std::string& path)
 	t_Buffer = stbi_load(path.c_str(), &t_Width, &t_Height, &t_BPP, 4);
 	if (t_Buffer == nullptr)
 	{
-		std::cout << stbi_failure_reason() << std::endl;
+		std::cout << "ERROR LOADING TEXTURE: " << stbi_failure_reason() << std::endl;
 	}
 
 	glGenTextures(1, &t_TextureID);

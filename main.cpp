@@ -14,6 +14,7 @@
 #include "BoundingBoxComponent.h"
 #include "EnemyComponent.h"
 #include "AltarComponent.h"
+#include "HUDComponent.h"
 #include <memory>
 
 #include <iostream>
@@ -26,10 +27,13 @@ using tigl::Vertex;
 GLFWwindow* window;
 
 std::shared_ptr<GameObject> player;
-
 std::list<std::shared_ptr<GameObject>> objects;
+
 MazeGenerator* mazeGen;
+
 double lastFrameTime = 0;
+
+const int screenX = 1400, screenY = 800;
 
 void init();
 void update();
@@ -41,7 +45,7 @@ int main(void)
 {
 	if (!glfwInit())
 		throw "Could not initialize glwf";
-	window = glfwCreateWindow(1400, 800, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(screenX, screenY, "Hello World", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -99,7 +103,8 @@ void init()
 	player->addComponent(std::make_shared<PlayerComponent>(window));
 	player->addComponent(std::make_shared<CameraComponent>(window));
 	player->addComponent(std::make_shared<AudioComponent>(AudioType::AudioPlayer));
-	player->addComponent(std::make_shared<FlashlightComponent>("resource/models/flashlight/flashlight.obj"));
+	player->addComponent(std::make_shared<FlashlightComponent>());
+	player->addComponent(std::make_shared<HUDComponent>());
 
 	glm::vec3 min = glm::vec3(-.1f, 0, -.1f);
 	glm::vec3 max = glm::vec3(.1f, 0, .1f);
@@ -116,7 +121,7 @@ void init()
 	ambience->addComponent(std::make_shared<AudioComponent>(AudioType::Ambience));
 	objects.push_back(ambience);
 
-	// adding the endpoint object to the game
+	// adding the endpoint object to the game. Y position -.499 so it stands directly on the floor
 	auto altar = std::make_shared<GameObject>();
 	altar->position = mazeGen->endPoint;
 	altar->position.y = -.499f;
@@ -158,7 +163,10 @@ void updatePlayer(float deltaTime) {
 	audioComponent->bIsMoving = playerComponent->bMoving;
 	audioComponent->bPlayOutOfBreathSound = playerComponent->bPlayOutOfBreathSound;
 
+	// let flashLight know if player is running
 	flashlightComponent->bIsRunning = playerComponent->bIsRunning;
+
+	//hudComponent->setRotation(cameraComponent->)
 
 	// Change FOV according to the movement of the player
 	cameraComponent->changeFOV(deltaTime, playerComponent->bIsRunning);
@@ -209,6 +217,7 @@ void draw()
 	for (auto& o : objects)
 		o->draw();
 
-	// Drawing the flashlight of the player
-	player->draw();
+	// Drawing the flashlight and HUD of the player
+	player->getComponent<FlashlightComponent>()->draw();
+	player->getComponent<HUDComponent>()->draw();
 }

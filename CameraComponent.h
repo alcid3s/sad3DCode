@@ -13,6 +13,7 @@ public:
 	void update(float deltaTime) override;
 	void updateCamera(float deltaTime);
 	void changeFOV(float deltaTime, bool running);
+
 public:
 	// current fov.
 	float fov;
@@ -22,7 +23,4 @@ protected:
 
 private:
 	bool* bIsRunning;
-
-private:
-	
 };
