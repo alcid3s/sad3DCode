@@ -63,6 +63,9 @@ void EnemyComponent::moveTo(float deltaTime) {
 		}
 	}
 	else {
+		glm::vec3 forward = glm::normalize(gameObject->position);
+		float angle = std::atan2(-forward.x, forward.z);
+		gameObject->rotation.y = glm::degrees(angle);
 		auto direction = glm::normalize(this->shortestPath[posInList]->position - gameObject->position);
 		gameObject->position += speed * deltaTime * direction;
 	}

@@ -1,12 +1,24 @@
 # Blender MTL File: 'None'
-# Material Count: 1
+# Material Count: 2
 
-newmtl Material
-Ns 250.000000
+newmtl scp-049_clothing_diffuse4.bmp
+Ns 359.999993
 Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
+Kd 0.460544 0.980036 0.732915
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd scp-049_clothing_diffuse4-transformedjpeg-.png
+
+newmtl scp-049_mask_diffuse5.bmp
+Ns 359.999993
+Ka 1.000000 1.000000 1.000000
+Kd 0.553957 0.620760 0.883387
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd scp-049_mask_diffuse5-transformed.jpeg.png
