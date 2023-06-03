@@ -9,7 +9,6 @@ GameObject::GameObject() : type(Type::TypeNone)
 	
 }
 
-
 GameObject::~GameObject()
 {
 }

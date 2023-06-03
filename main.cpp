@@ -90,15 +90,14 @@ void init()
 	player->addComponent(std::make_shared<FlashlightComponent>("resource/models/flashlight/flashlight.obj"));
 
 	glm::vec3 min = glm::vec3(-.1f, 0, -.1f);
-	glm::vec3 max = glm::vec3( .1f, 0,  .1f);
+	glm::vec3 max = glm::vec3(.1f, 0, .1f);
 	player->addComponent(std::make_shared<BoundingBoxComponent>(min, max));
 
 	// Adding all gameobjects the generate function created to the gameobjects list
 	for (auto row : maze) {
 		for (auto obj : row) {
 			if (obj->gameObject.type == Type::Wall || obj->gameObject.type == Type::Edge) {
-				//std::cout << "added obj: (" << obj->gameObject.position.x << "," << obj->gameObject.position.y << "," << obj->gameObject.position.z << ")\n";
-				glm::vec3 minimal = glm::vec3(- .5f, 0, - .5f);
+				glm::vec3 minimal = glm::vec3(-.5f, 0, -.5f);
 				glm::vec3 maximal = glm::vec3(.5f, 0, .5f);
 				obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
 			}
