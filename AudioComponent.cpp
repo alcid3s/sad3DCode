@@ -37,6 +37,10 @@ AudioComponent::AudioComponent(AudioType type) : type(type)
 	case AudioType::AudioEnemy:
 		break;
 	case AudioType::Ambience:
+		this->ambience = new sf::Music();
+		this->ambience->openFromFile("resource/sounds/ambience.wav");
+		this->ambience->setVolume(5.f);
+		this->ambience->setPitch(1.f);
 		break;
 	}
 }
@@ -56,7 +60,15 @@ void AudioComponent::update(float deltaTime) {
 			playFootsteps();
 		}
 		break;
+	case AudioType::AudioEnemy:
+		break;
+	case AudioType::Ambience:
+		if (ambience && ambience->getStatus() != sf::Sound::Playing) {
+			ambience->play();
+		}
+		break;
 	}
+	
 
 }
 

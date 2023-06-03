@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AltarComponent.cpp" />
     <ClCompile Include="AudioComponent.cpp" />
     <ClCompile Include="BoundingBoxComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="TileComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AltarComponent.h" />
     <ClInclude Include="AudioComponent.h" />
     <ClInclude Include="BoundingBoxComponent.h" />
     <ClInclude Include="CameraComponent.h" />

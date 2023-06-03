@@ -48,10 +48,6 @@ private:
 	glm::vec3 SetSpawnPoint(const int& sizeX, const int& sizeZ);
 	void SetEnemySpawnPoint(const int& sizeX, const int& sizeZ);
 	void setEndTile(const int& sizeX, const int& sizeZ);
-	CubeComponent* PlaceEmptyGameobject(const int& x, const int& z);
-	CubeComponent* PlaceWall(const float& x, const float& z);
-	PlaneComponent* PlaceFloor(const float& x, const float& z);
-	ObjModel* PlaceAltar();
 
 	// functions to walk the maze and apply DFS algorithm
 private:
@@ -59,7 +55,6 @@ private:
 	void FillMaze(const int& sizeX, const int& sizeZ);
 };
 
-// out of class because they're needed in FpsCam too.
 std::vector<std::shared_ptr<Cell>> GetUnvisitedNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>>& maze);
 std::vector<std::shared_ptr<Cell>> GetNeighbours(std::shared_ptr<Cell> tile, std::vector<std::vector<std::shared_ptr<Cell>>>& maze);
 bool NextToFloor(std::shared_ptr<Cell> currentTile, std::vector<std::vector<std::shared_ptr<Cell>>> maze);

@@ -13,6 +13,7 @@
 #include "FlashlightComponent.h"
 #include "BoundingBoxComponent.h"
 #include "EnemyComponent.h"
+#include "AltarComponent.h"
 #include <memory>
 
 #include <iostream>
@@ -25,7 +26,6 @@ using tigl::Vertex;
 GLFWwindow* window;
 
 std::shared_ptr<GameObject> player;
-std::shared_ptr<GameObject> enemy;
 
 std::list<std::shared_ptr<GameObject>> objects;
 MazeGenerator* mazeGen;
@@ -78,6 +78,18 @@ void init()
 	mazeGen = new MazeGenerator();
 	auto maze = mazeGen->Generate(10, 10);
 
+	// Adding all gameobjects the generate function created to the gameobjects list
+	for (auto row : maze) {
+		for (auto obj : row) {
+			if (obj->gameObject.type == Type::Wall || obj->gameObject.type == Type::Edge) {
+				glm::vec3 minimal = glm::vec3(-.5f, 0, -.5f);
+				glm::vec3 maximal = glm::vec3(.5f, 0, .5f);
+				obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
+			}
+			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
+		}
+	}
+
 	// Create player and sets it's position to the spawnpoint
 	player = std::make_shared<GameObject>();
 	player->type = Type::Player;
@@ -93,21 +105,23 @@ void init()
 	glm::vec3 max = glm::vec3(.1f, 0, .1f);
 	player->addComponent(std::make_shared<BoundingBoxComponent>(min, max));
 
-	// Adding all gameobjects the generate function created to the gameobjects list
-	for (auto row : maze) {
-		for (auto obj : row) {
-			if (obj->gameObject.type == Type::Wall || obj->gameObject.type == Type::Edge) {
-				glm::vec3 minimal = glm::vec3(-.5f, 0, -.5f);
-				glm::vec3 maximal = glm::vec3(.5f, 0, .5f);
-				obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
-			}
-			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
-		}
-	}
-
-	enemy = std::make_shared<GameObject>();
+	// Creating an enemy and adding it to the objects list
+	auto enemy = std::make_shared<GameObject>();
 	enemy->position = mazeGen->enemySpawnTile->position;
 	enemy->addComponent(std::make_shared<EnemyComponent>(objects));
+	objects.push_back(enemy);
+
+	// adding ambient sound to the objects list
+	auto ambience = std::make_shared<GameObject>();
+	ambience->addComponent(std::make_shared<AudioComponent>(AudioType::Ambience));
+	objects.push_back(ambience);
+
+	// adding the endpoint object to the game
+	auto altar = std::make_shared<GameObject>();
+	altar->position = mazeGen->endPoint;
+	altar->position.y = -.499f;
+	altar->addComponent(std::make_shared<AltarComponent>());
+	objects.push_back(altar);
 }
 
 // Enables fog into the world
@@ -163,9 +177,6 @@ void update()
 
 	// Updating player
 	updatePlayer(deltaTime);
-
-	// updating enemy
-	enemy->update(deltaTime);
 }
 
 void draw()
@@ -200,7 +211,4 @@ void draw()
 
 	// Drawing the flashlight of the player
 	player->draw();
-
-	// Drawing enemy
-	enemy->draw();
 }

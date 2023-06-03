@@ -48,6 +48,10 @@ private:
 
 	clock_t timeToBeidle = 0;
 
-	// distance horizontally and vertically between tiles.
+	// distance horizontally and vertically between tiles
 	const float distanceBetweenTiles = 1.25f;
+private:
+
+	// resets parameters so that a new path can be generated
+	void resetParams();
 };

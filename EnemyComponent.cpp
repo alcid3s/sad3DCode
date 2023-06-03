@@ -12,6 +12,7 @@
 
 EnemyComponent::EnemyComponent(std::list<std::shared_ptr<GameObject>>& objects, float speed, const std::string& path) : objects(objects), speed(speed)
 {
+	std::cout << "ptr: " << &objects << "\n";
 	for (auto& obj : objects) {
 		if (obj->type == Type::Floor) {
 			floors.push_back(obj);
@@ -51,8 +52,10 @@ void EnemyComponent::draw()
 }
 
 void EnemyComponent::moveTo(float deltaTime) {
-	if (shortestPath.empty())
+	if (shortestPath.empty() || shortestPath.size() == 1) {
+		resetParams();
 		return;
+	}
 
 	float distance = glm::distance(this->shortestPath[posInList]->position, gameObject->position);
 	if (distance < speed * deltaTime) {
@@ -71,15 +74,18 @@ void EnemyComponent::moveTo(float deltaTime) {
 	}
 
 	if (this->shortestPath[posInList]->position == target) {
-		this->shortestPath.clear();
-		this->target = glm::vec3(-1, -1, -1);
-		timeToBeidle = clock();
-
-		bMoving = false;
+		resetParams();
 		bIdle = true;
-
+		timeToBeidle = clock();
 		std::cout << "reached endpoint\n";
 	}
+}
+
+void EnemyComponent::resetParams() {
+	this->shortestPath.clear();
+	this->target = glm::vec3(-1, -1, -1);
+	bMoving = false;
+	bIdle = false;
 }
 
 /*

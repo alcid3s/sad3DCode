@@ -45,10 +45,11 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 	// Create a random endpoint somewhere not close to the spawnPoint.
 	setEndTile(sizeOfMazeX, sizeOfMazeZ);
 
+	// giving the enemy a spawnpoint in the maze
 	SetEnemySpawnPoint(sizeOfMazeX, sizeOfMazeZ);
 
 	// Fill empty spots of maze with walls
-	FillMaze(sizeOfMazeX, sizeOfMazeZ);
+	// FillMaze(sizeOfMazeX, sizeOfMazeZ);
 
 	return this->maze;
 }

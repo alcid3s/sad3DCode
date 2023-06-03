@@ -25,6 +25,7 @@ protected:
 	virtual void playFootsteps();
 	virtual void playOutOfBreathSound();
 
+	sf::Music* ambience = nullptr;
 	std::vector<std::tuple<sf::Sound, sf::SoundBuffer>> soundsList;
 private:
 	AudioType type;

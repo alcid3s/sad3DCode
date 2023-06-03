@@ -25,7 +25,7 @@ public:
 private:
 	GLFWwindow* window;
 	GameObject* obj;
-	float speed;
+	const float speed;
 
 	bool bShiftPressed = false;
 	bool bWPressed = false;
