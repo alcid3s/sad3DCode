@@ -10,6 +10,8 @@ class Component;
 class DrawComponent;
 class BoundingBoxComponent;
 
+enum Type;
+
 class GameObject
 {
 	std::shared_ptr<DrawComponent> drawComponent;
@@ -21,6 +23,9 @@ public:
 	glm::vec3 position;
 	glm::vec3 rotation = glm::vec3(0, 0, 0);
 	glm::vec3 scale = glm::vec3(1, 1, 1);
+
+	// specifies the type of object it is.
+	Type type;
 
 	void addComponent(std::shared_ptr<Component> component);
 	std::list<std::shared_ptr<Component>> getComponents();

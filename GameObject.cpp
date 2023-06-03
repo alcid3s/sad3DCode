@@ -2,9 +2,11 @@
 #include "DrawComponent.h"
 #include "tigl.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "enumType.h"
 
-GameObject::GameObject()
+GameObject::GameObject() : type(Type::TypeNone)
 {
+	
 }
 
 
