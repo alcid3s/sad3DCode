@@ -82,7 +82,7 @@ void init()
 	// Adding components to the player
 	player->addComponent(std::make_shared<PlayerComponent>(window));
 	player->addComponent(std::make_shared<CameraComponent>(window));
-	player->addComponent(std::make_shared<AudioComponent>(AudioType::Player));
+	player->addComponent(std::make_shared<AudioComponent>(AudioType::AudioPlayer));
 	player->addComponent(std::make_shared<FlashlightComponent>("resource/models/flashlight/flashlight.obj"));
 
 	glm::vec3 min = glm::vec3(-.1f, 0, -.1f);

@@ -4,8 +4,8 @@
 #include <vector>
 #include <tuple>
 enum AudioType {
-	Player,
-	Enemy,
+	AudioPlayer,
+	AudioEnemy,
 	Ambience
 };
 

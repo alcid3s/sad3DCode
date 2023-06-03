@@ -5,7 +5,7 @@
 AudioComponent::AudioComponent(AudioType type) : type(type)
 {
 	switch (type) {
-	case AudioType::Player:
+	case AudioType::AudioPlayer:
 		for (int i = 1; i <= amountOfOutOfBreathSounds; i++) {
 			sf::Sound* sound = new sf::Sound();
 			sf::SoundBuffer* buffer = new sf::SoundBuffer();
@@ -34,7 +34,7 @@ AudioComponent::AudioComponent(AudioType type) : type(type)
 			this->soundsList.push_back(std::make_tuple(*sound, *buffer));
 		}
 		break;
-	case AudioType::Enemy:
+	case AudioType::AudioEnemy:
 		break;
 	case AudioType::Ambience:
 		break;
@@ -47,7 +47,7 @@ AudioComponent::~AudioComponent()
 
 void AudioComponent::update(float deltaTime) {
 	switch (type) {
-	case AudioType::Player:
+	case AudioType::AudioPlayer:
 		if (bPlayOutOfBreathSound) {
 			playOutOfBreathSound();
 		}
