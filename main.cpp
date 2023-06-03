@@ -77,6 +77,7 @@ void init()
 
 	// Create player and sets it's position to the spawnpoint
 	player = std::make_shared<GameObject>();
+	player->type = Type::Player;
 	player->position = mazeGen->spawnPoint;
 
 	// Adding components to the player
@@ -92,13 +93,12 @@ void init()
 	// Adding all gameobjects the generate function created to the gameobjects list
 	for (auto row : maze) {
 		for (auto obj : row) {
-			if (obj->type == Type::Wall || obj->type == Type::Edge) {
+			if (obj->gameObject.type == Type::Wall || obj->gameObject.type == Type::Edge) {
 				//std::cout << "added obj: (" << obj->gameObject.position.x << "," << obj->gameObject.position.y << "," << obj->gameObject.position.z << ")\n";
 				glm::vec3 minimal = glm::vec3(- .5f, 0, - .5f);
 				glm::vec3 maximal = glm::vec3(.5f, 0, .5f);
 				obj->gameObject.addComponent(std::make_shared<BoundingBoxComponent>(minimal, maximal));
 			}
-
 			objects.push_back(std::make_shared<GameObject>(obj->gameObject));
 		}
 	}

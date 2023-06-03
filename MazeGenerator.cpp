@@ -36,7 +36,7 @@ std::vector<std::vector<std::shared_ptr<Cell>>> MazeGenerator::Generate(const in
 
 	// Getting the starting tile.
 	this->spawnGameObject = maze.at((int)-spawnPoint.z).at((int)-spawnPoint.x);
-	this->spawnGameObject->type = Type::Floor;
+	this->spawnGameObject->gameObject.type = Type::Floor;
 	this->spawnGameObject->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
 	std::vector<std::shared_ptr<Cell>> visitedTiles;
 
@@ -65,7 +65,7 @@ void MazeGenerator::DepthFirstSearch(std::shared_ptr<Cell> tile, std::vector<std
 
 		// set the unvisited tile to a plane.
 		nextTile->gameObject.addComponent(std::make_shared<PlaneComponent>(glm::vec3(1, 0, 1), mazeTextures[0]));
-		nextTile->type = Type::Floor;
+		nextTile->gameObject.type = Type::Floor;
 
 		visitedTiles->push_back(tile);
 
@@ -112,7 +112,7 @@ void MazeGenerator::SetupMaze(const int& sizeOfMazeX, const int& sizeOfMazeZ)
 				cell.gameObject.position = glm::vec3(x, 0.f, z);
 
 				cell.gameObject.addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
-				cell.type = Type::Edge;
+				cell.gameObject.type = Type::Edge;
 			}
 
 			// not an edge
@@ -120,7 +120,7 @@ void MazeGenerator::SetupMaze(const int& sizeOfMazeX, const int& sizeOfMazeZ)
 				this->amountOfTiles++;
 				cell.visited = false;
 				cell.gameObject.position = glm::vec3(x, -.5f, z);
-				cell.type = Type::Empty;
+				cell.gameObject.type = Type::Empty;
 			}
 			file.push_back(std::make_shared<Cell>(cell));
 		}
@@ -147,8 +147,8 @@ void MazeGenerator::FillMaze(const int& sizeX, const int& sizeZ) {
 		for (int x = 0; x < sizeX; x++)
 		{
 			auto cell = maze[z][x];
-			if (cell->type == Type::Empty) {
-				cell->type = Type::Wall;
+			if (cell->gameObject.type == Type::Empty) {
+				cell->gameObject.type = Type::Wall;
 				cell->gameObject.position = glm::vec3(x, 0.f, z);
 				cell->gameObject.addComponent(std::make_shared<CubeComponent>(glm::vec3(1, 1, 1), mazeTextures[1]));
 			}
@@ -180,7 +180,7 @@ bool NextToFloor(std::shared_ptr<Cell> currentTile, std::vector<std::vector<std:
 	int connections = 0;
 	std::vector<std::shared_ptr<Cell>> neighbours = GetNeighbours(currentTile, maze);
 	for (auto& tile : neighbours) {
-		if (tile->type == Type::Floor) {
+		if (tile->gameObject.type == Type::Floor) {
 			connections++;
 		}
 	}
