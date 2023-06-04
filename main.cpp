@@ -1,10 +1,11 @@
+// first include because it contains ImGui
+#include "GuiManager.h"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "tigl.h"
 #include <glm/gtc/matrix_transform.hpp>
-
 #include "MazeGenerator.h"
-
 #include "GameObject.h"
 #include "CubeComponent.h"
 #include "PlayerComponent.h"
@@ -16,7 +17,6 @@
 #include "AltarComponent.h"
 #include "HUDComponent.h"
 #include <memory>
-
 #include <iostream>
 using tigl::Vertex;
 
@@ -31,7 +31,11 @@ std::list<std::shared_ptr<GameObject>> objects;
 
 MazeGenerator* mazeGen;
 
+GuiManager* guiManager;
+
 double lastFrameTime = 0;
+
+bool shouldDrawGui = true;
 
 const int screenX = 1400, screenY = 800;
 
@@ -54,6 +58,8 @@ int main(void)
 	glfwMakeContextCurrent(window);
 
 	tigl::init();
+
+	guiManager = new GuiManager(window, screenX, screenY);
 
 	init();
 
@@ -193,13 +199,19 @@ void draw()
 	glClearColor(0.05f, 0.05f, 0.05f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (guiManager->shouldDrawGui) {
+		guiManager->draw();
+		return;
+	}
+	
+
 	// Make sure not all sides of the vertices are visible to the player
 	glEnable(GL_DEPTH_TEST);
 
 	// Set projection matrix
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-
+	
 	glm::mat4 projection = glm::perspective(glm::radians(player->getComponent<CameraComponent>()->fov), viewport[2] / (float)viewport[3], 0.01f, 1000.0f);
 
 	auto cameraComponent = player->getComponent<CameraComponent>();
