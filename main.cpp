@@ -251,7 +251,7 @@ void draw()
 	}
 	
 	// Draw dark background
-	glClearColor(1.f, 1.00f, 1.f, 1.f);
+	glClearColor(.05f, .05f, .05f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Make sure not all sides of the vertices are visible to the player
@@ -272,7 +272,7 @@ void draw()
 
 	tigl::shader->enableColor(true);
 
-	// enableFog(true);
+	enableFog(true);
 
 	// Drawing all gameobjects
 	for (auto& o : objects)

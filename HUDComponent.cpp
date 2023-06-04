@@ -5,11 +5,11 @@
 
 HUDComponent::HUDComponent(std::string path) : texture(new Texture(path))
 {
-	// Initialize the initial size of the HUD quad
-	float width = 0.28f;  // Example width
-	float height = 0.17f; // Example height
+	// size for hud
+	float width = 0.28f;  
+	float height = 0.17f; 
 
-	// Set the initial vertices of the HUD quad
+	// vertices for quad of hud
 	verts.push_back(tigl::Vertex::PT(glm::vec3(-width, -height, 0.0f), glm::vec2(0, 0)));
 	verts.push_back(tigl::Vertex::PT(glm::vec3(width, -height, 0.0f), glm::vec2(1, 0)));
 	verts.push_back(tigl::Vertex::PT(glm::vec3(width, height, 0.0f), glm::vec2(1, 1)));
@@ -35,7 +35,6 @@ void HUDComponent::update(float deltaTime)
 
 		// rotate hud around x-axis
 		ret = glm::rotate(ret, -gameObject->rotation.x, glm::vec3(1, 0, 0));
-		
 
 		// move HUD slightly in front of player
 		position = glm::vec3(0.0f, 0.0f, -0.2f);
