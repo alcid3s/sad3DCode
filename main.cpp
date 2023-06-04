@@ -17,12 +17,21 @@
 #include "AltarComponent.h"
 #include "HUDComponent.h"
 #include <memory>
+
+#include <thread>
+#include <atomic>
+
+
 #include <iostream>
 using tigl::Vertex;
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
+
+// used to communicate between threads.
+std::atomic<bool> bMazeGenerated(false);
+bool bMazeGenerationStarted = false;
 
 GLFWwindow* window;
 
@@ -35,7 +44,7 @@ GuiManager* guiManager;
 
 double lastFrameTime = 0;
 
-bool shouldDrawGui = true;
+bool bShouldDrawGui = true;
 
 const int screenX = 1400, screenY = 800;
 
@@ -60,8 +69,7 @@ int main(void)
 	tigl::init();
 
 	guiManager = new GuiManager(window, screenX, screenY);
-
-	init();
+	guiManager->init();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -76,6 +84,7 @@ int main(void)
 	return 0;
 }
 
+// This function will run in a seperate thread
 void init()
 {
 	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -110,7 +119,7 @@ void init()
 	player->addComponent(std::make_shared<CameraComponent>(window));
 	player->addComponent(std::make_shared<AudioComponent>(AudioType::AudioPlayer));
 	player->addComponent(std::make_shared<FlashlightComponent>());
-	player->addComponent(std::make_shared<HUDComponent>());
+	//player->addComponent(std::make_shared<HUDComponent>());
 
 	glm::vec3 min = glm::vec3(-.1f, 0, -.1f);
 	glm::vec3 max = glm::vec3(.1f, 0, .1f);
@@ -133,6 +142,8 @@ void init()
 	altar->position.y = -.499f;
 	altar->addComponent(std::make_shared<AltarComponent>());
 	objects.push_back(altar);
+
+	bMazeGenerated = true;
 }
 
 // Enables fog into the world
@@ -180,11 +191,36 @@ void updatePlayer(float deltaTime) {
 
 void update()
 {
+	if (guiManager->bShouldDrawGui) {
+		guiManager->update();
+		return;
+	}
+	else if (guiManager->bLoadingScreen && !bMazeGenerationStarted) {
+		// setting to false if it was true
+		bMazeGenerated = false;
+
+		// maze generation ahs started so it won't start another time
+		bMazeGenerationStarted = true;
+
+		// creating thread initialising all variables
+		std::thread initThread(init);
+
+		// detach so mainthread can run normally.
+		initThread.detach();
+	}
+	if (!bMazeGenerated) {
+		return;
+	}
+	else {
+		guiManager->bLoadingScreen = false;
+	}
+	
+
 	// Getting deltatime
 	double currentFrame = glfwGetTime();
 	float deltaTime = currentFrame - lastFrameTime;
 	lastFrameTime = currentFrame;
-
+		
 	// Updating gameobjects
 	for (auto& o : objects)
 		o->update(deltaTime);
@@ -199,8 +235,15 @@ void draw()
 	glClearColor(0.05f, 0.05f, 0.05f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if (guiManager->shouldDrawGui) {
+	if (guiManager->bShouldDrawGui) {
 		guiManager->draw();
+		return;
+	}
+	else if (guiManager->bLoadingScreen) {
+		guiManager->draw();
+		return;
+	}
+	if (!bMazeGenerated) {
 		return;
 	}
 	
@@ -223,13 +266,13 @@ void draw()
 
 	tigl::shader->enableColor(true);
 
-	enableFog(true);
+	//enableFog(true);
 
 	// Drawing all gameobjects
 	for (auto& o : objects)
 		o->draw();
 
 	// Drawing the flashlight and HUD of the player
-	player->getComponent<FlashlightComponent>()->draw();
-	player->getComponent<HUDComponent>()->draw();
+	// player->getComponent<FlashlightComponent>()->draw();
+	//player->getComponent<HUDComponent>()->draw();
 }

@@ -5,6 +5,13 @@
 
 class GLFWwindow;
 
+enum MenuType {
+	MainMenu,
+	Options,
+	Loading,
+	None
+};
+
 class GuiManager {
 public:
 	GuiManager(GLFWwindow* window, const int& x, const int& y);
@@ -13,9 +20,16 @@ public:
 	void update();
 	void draw();
 
-	bool shouldDrawGui;
+	void init();
+
+	bool bShouldDrawGui = true;
+	bool bLoadingScreen = false;
 private:
 	GLFWwindow* window;
 	const int& screenX, screenY;
+
+	MenuType menuType;
+private:
+	void drawMainMenu();
 	void setColorGui();
 };

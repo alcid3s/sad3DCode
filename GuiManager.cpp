@@ -4,8 +4,16 @@
 #include <iostream>
 
 GuiManager::GuiManager(GLFWwindow* window, const int& x, const int& y) 
-	: window(window), screenX(x), screenY(y), shouldDrawGui(true)
+	: window(window), screenX(x), screenY(y), menuType(MenuType::MainMenu)
 {
+	
+}
+
+GuiManager::~GuiManager()
+{
+}
+
+void GuiManager::init() {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -15,16 +23,28 @@ GuiManager::GuiManager(GLFWwindow* window, const int& x, const int& y)
 	setColorGui();
 }
 
-GuiManager::~GuiManager()
-{
-}
-
 void GuiManager::update()
 {
 }
 
 void GuiManager::draw()
 {
+	switch (menuType) {
+	case MenuType::MainMenu:
+		drawMainMenu();
+		break;
+	case MenuType::Loading:
+		break;
+	case MenuType::Options:
+		// draw options
+		break;
+	default:
+		std::cout << "no menu selected\n";
+		exit(-1);
+	}
+}
+
+void GuiManager::drawMainMenu() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -57,7 +77,8 @@ void GuiManager::draw()
 	if (ImGui::Button("PLAY!", buttonSize))
 	{
 		std::cout << "Button Clicked\n";
-		shouldDrawGui = false;
+		bShouldDrawGui = false;
+		bLoadingScreen = true;
 	}
 
 	ImGui::End();
@@ -65,7 +86,9 @@ void GuiManager::draw()
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	if (shouldDrawGui) return;
+	if (bShouldDrawGui) return;
+
+	menuType = MenuType::Loading;
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
