@@ -7,8 +7,9 @@ class GLFWwindow;
 
 enum MenuType {
 	MainMenu,
-	Options,
 	Loading,
+	Options,
+	Playing,
 	None
 };
 
@@ -22,14 +23,14 @@ public:
 
 	void init();
 
-	bool bShouldDrawGui = true;
-	bool bLoadingScreen = false;
+	MenuType menuType;
 private:
 	GLFWwindow* window;
 	const int& screenX, screenY;
 
-	MenuType menuType;
+	
 private:
+	void drawLoadingScreen();
 	void drawMainMenu();
 	void setColorGui();
 };

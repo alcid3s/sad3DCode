@@ -33,6 +33,10 @@ void HUDComponent::update(float deltaTime)
 		// rotate hud
 		ret = glm::rotate(ret, -gameObject->rotation.y, glm::vec3(0, 1, 0));
 
+		// rotate hud around x-axis
+		ret = glm::rotate(ret, -gameObject->rotation.x, glm::vec3(1, 0, 0));
+		
+
 		// move HUD slightly in front of player
 		position = glm::vec3(0.0f, 0.0f, -0.2f);
 

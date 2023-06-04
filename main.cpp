@@ -21,7 +21,6 @@
 #include <thread>
 #include <atomic>
 
-
 #include <iostream>
 using tigl::Vertex;
 
@@ -44,7 +43,7 @@ GuiManager* guiManager;
 
 double lastFrameTime = 0;
 
-bool bShouldDrawGui = true;
+const bool activateGui = false;
 
 const int screenX = 1400, screenY = 800;
 
@@ -68,8 +67,13 @@ int main(void)
 
 	tigl::init();
 
-	guiManager = new GuiManager(window, screenX, screenY);
-	guiManager->init();
+	if (activateGui) {
+		guiManager = new GuiManager(window, screenX, screenY);
+		guiManager->init();
+	}
+	else {
+		init();
+	}
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -119,7 +123,7 @@ void init()
 	player->addComponent(std::make_shared<CameraComponent>(window));
 	player->addComponent(std::make_shared<AudioComponent>(AudioType::AudioPlayer));
 	player->addComponent(std::make_shared<FlashlightComponent>());
-	//player->addComponent(std::make_shared<HUDComponent>());
+	player->addComponent(std::make_shared<HUDComponent>());
 
 	glm::vec3 min = glm::vec3(-.1f, 0, -.1f);
 	glm::vec3 max = glm::vec3(.1f, 0, .1f);
@@ -191,30 +195,31 @@ void updatePlayer(float deltaTime) {
 
 void update()
 {
-	if (guiManager->bShouldDrawGui) {
-		guiManager->update();
-		return;
-	}
-	else if (guiManager->bLoadingScreen && !bMazeGenerationStarted) {
-		// setting to false if it was true
-		bMazeGenerated = false;
+	if (activateGui) {
+		if (guiManager->menuType == MenuType::MainMenu) {
+			guiManager->update();
+			return;
+		}
+		else if (guiManager->menuType == MenuType::Loading && !bMazeGenerationStarted) {
+			// setting to false if it was true
+			bMazeGenerated = false;
 
-		// maze generation ahs started so it won't start another time
-		bMazeGenerationStarted = true;
+			// maze generation ahs started so it won't start another time
+			bMazeGenerationStarted = true;
 
-		// creating thread initialising all variables
-		std::thread initThread(init);
+			// creating thread initialising all variables
+			std::thread initThread(init);
 
-		// detach so mainthread can run normally.
-		initThread.detach();
+			// detach so mainthread can run normally.
+			initThread.detach();
+		}
+		if (!bMazeGenerated) {
+			return;
+		}
+		else {
+			guiManager->menuType = MenuType::Playing;
+		}
 	}
-	if (!bMazeGenerated) {
-		return;
-	}
-	else {
-		guiManager->bLoadingScreen = false;
-	}
-	
 
 	// Getting deltatime
 	double currentFrame = glfwGetTime();
@@ -231,22 +236,23 @@ void update()
 
 void draw()
 {
-	// Draw dark background
-	glClearColor(0.05f, 0.05f, 0.05f, 1.f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	if (guiManager->bShouldDrawGui) {
-		guiManager->draw();
-		return;
-	}
-	else if (guiManager->bLoadingScreen) {
-		guiManager->draw();
-		return;
-	}
-	if (!bMazeGenerated) {
-		return;
+	if (activateGui) {
+		if (guiManager->menuType == MenuType::MainMenu) {
+			guiManager->draw();
+			return;
+		}
+		else if (guiManager->menuType == MenuType::Loading) {
+			guiManager->draw();
+			return;
+		}
+		if (!bMazeGenerated) {
+			return;
+		}
 	}
 	
+	// Draw dark background
+	glClearColor(1.f, 1.00f, 1.f, 1.f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Make sure not all sides of the vertices are visible to the player
 	glEnable(GL_DEPTH_TEST);
@@ -266,13 +272,16 @@ void draw()
 
 	tigl::shader->enableColor(true);
 
-	//enableFog(true);
+	// enableFog(true);
 
 	// Drawing all gameobjects
 	for (auto& o : objects)
 		o->draw();
 
 	// Drawing the flashlight and HUD of the player
-	// player->getComponent<FlashlightComponent>()->draw();
-	//player->getComponent<HUDComponent>()->draw();
+	player->getComponent<FlashlightComponent>()->draw();
+	if (!activateGui) {
+		player->getComponent<HUDComponent>()->draw();
+	}
+	
 }
